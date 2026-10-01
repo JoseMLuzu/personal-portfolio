@@ -1,38 +1,18 @@
 import { BittyChat } from "./components/BittyChat";
-import { BittyScene } from "./components/BittyScene";
+import { Hero } from "./components/Hero";
+import { ProjectArrivalBitty } from "./components/ProjectArrivalBitty";
 import { Navbar } from "./components/navbar";
 import { ProjectCard } from "./components/ProjectCard";
 import { projects } from "./content/projects";
+import { BittyGuideProvider, BittyRest } from "./components/BittyGuide";
+import { BittyCodeLab } from "./components/BittyCodeLab";
+import { Technologies } from "./components/Technologies";
 
 export function App() {
   return (
-    <main>
+    <BittyGuideProvider><main>
       <Navbar />
-      <section className="hero" id="inicio">
-        <div className="hero-copy">
-          <p className="eyebrow">Desarrollador web · Ecuador</p>
-          <h1>
-            José Manuel
-            <br />
-            <span className="surname">
-              Luzu<span className="falling-piece">riaga.</span>
-            </span>
-          </h1>
-          <p className="intro">
-            Construyo productos web claros y útiles con React, Python y bases de
-            datos.
-          </p>
-          <a className="primary-action" href="#proyectos">
-            Ver proyectos <span aria-hidden="true">↘</span>
-          </a>
-          <div className="status" aria-label="Tecnologías principales">
-            <span>React</span>
-            <span>Python</span>
-            <span>Bases de datos</span>
-          </div>
-        </div>
-        <BittyScene />
-      </section>
+      <Hero />
       <section
         className="projects"
         id="proyectos"
@@ -47,10 +27,13 @@ export function App() {
               sin humo.
             </h2>
           </div>
-          <p>
-            Lo que está confirmado se muestra. Lo que falta, se marca. Cada caso
-            está preparado para crecer con contexto y resultados verificables.
-          </p>
+          <div className="project-heading-aside">
+            <p>
+              Lo que está confirmado se muestra. Lo que falta, se marca. Cada caso
+              está preparado para crecer con contexto y resultados verificables.
+            </p>
+            <ProjectArrivalBitty />
+          </div>
         </header>
         <div className="project-grid">
           {projects.map((project, index) => (
@@ -62,6 +45,7 @@ export function App() {
           ))}
         </div>
       </section>
+      <Technologies />
       <section className="about" id="sobre-mi">
         <p className="eyebrow">Sobre mí</p>
         <div>
@@ -76,8 +60,23 @@ export function App() {
             concretos en interfaces claras y sistemas mantenibles.
           </p>
         </div>
+        <article className="portfolio-engineering" id="criterio-tecnico">
+          <div className="engineering-header"><div>
+          <p className="eyebrow">Un caso que puedes inspeccionar</p>
+          <h3>Este portafolio, por dentro.</h3>
+          </div><BittyRest stop="sobre-mi" /></div>
+          <p>La interacción de Bitty también es una muestra de cómo está construido el sitio.</p>
+          <dl className="case-facts">
+            <div><dt>2D con Motion</dt><dd>Una línea de tiempo sincroniza poses, cuerda, caída e impacto. Se precargan las imágenes y se respeta el movimiento reducido.</dd></div>
+            <div><dt>Acciones inmediatas</dt><dd>Mostrar un proyecto y navegar son acciones locales. No requieren una llamada a la IA.</dd></div>
+            <div><dt>IA con límites</dt><dd>FastAPI conserva la clave en el servidor. El modelo genera texto; las acciones se eligen de una lista permitida. Sin clave o ante un error, hay respuestas preparadas.</dd></div>
+            <div><dt>Un límite consciente</dt><dd>Las fichas distinguen los datos conocidos de lo que falta documentar. El recorrido funciona sin activar al guía.</dd></div>
+          </dl>
+          <a className="text-action" href="https://github.com/JoseMLuzu/personal-portfolio" target="_blank" rel="noreferrer">Revisar el código del portafolio ↗</a>
+        </article>
+        <BittyCodeLab />
       </section>
-      <footer>
+      <footer id="final">
         <a className="brand" href="#inicio">
           JML<span>_</span>
         </a>
@@ -85,8 +84,9 @@ export function App() {
           Construido con React + FastAPI ·{" "}
           <span>{new Date().getFullYear()}</span>
         </p>
+        <BittyRest stop="final" />
       </footer>
       <BittyChat />
-    </main>
+    </main></BittyGuideProvider>
   );
 }

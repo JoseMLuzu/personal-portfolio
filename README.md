@@ -56,8 +56,12 @@ Las pruebas cubren la escena en primera visita, reproducción manual, acción t�
 
 ## Arquitectura
 
-- `src/components/BittyScene.tsx`: escena breve por estados; `sessionStorage` evita repetirla automáticamente.
+- `src/components/Hero.tsx` y `Hero.css`: presentación limpia y estilos locales del hero, sin tarjetas ni escenarios.
+- `src/components/BittyScene.tsx`: escena por fases (8,7 s): «iaga» cae a la derecha, Bitty lo nota y busca la cortina en el borde, la cierra hasta la «i» y repara detrás. Al abrirla las letras están colocadas, algo torcidas; un toque las endereza. La cortina usa `public/assets/bitty-indigo-curtain.png` con desenfoque del fondo en las zonas transparentes, sin relleno morado. `sessionStorage` evita repetirla automáticamente. Pointer, teclado, rueda, tacto, scroll o salida del hero completan la escena sin cancelar la interacción.
 - `src/components/BittyChat.tsx`: interfaz de preguntas. Solo React interpreta las acciones permitidas.
+- `src/components/BittyGuide.tsx`: controlador del recorrido. Detecta la sección visible, recuerda el modo guía y la preferencia de ocultar en `localStorage`, y abre fichas sin IA.
+- `src/components/ProjectArrivalBitty.tsx`: llegada con Motion, precarga de poses, repetición y modo de movimiento reducido.
+- `src/components/Technologies.tsx`, `Technologies.css` y `useTechnologyTide.ts`: marea de 9.7 segundos, una vez por sesión; el agua cubre las categorías, Bitty hace ida y vuelta y desembarca en el asistente fijo. Las palabras quedan ligeramente torcidas. [Secuencia y assets](docs/technology-tide.md).
 - `src/api/bitty.ts`: cliente y alternativa local si el backend no está disponible.
 - `content/projects.json`: fuente legible de datos y campos pendientes de revisión.
 - `backend/app/main.py`: selección de contexto, OpenRouter, timeout, validación, límite de solicitudes y respuestas alternativas.
@@ -99,3 +103,19 @@ El modelo solo genera `text`. El backend decide `project` y `action` a partir de
 5. Estado y enlace de FinTrack, si existe una demo pública.
 
 Las descripciones actuales de Seeds y HostiQR son prudentes y se basan únicamente en lo visible en sus demos públicas. No se atribuyen clientes, métricas ni resultados.
+
+### Completar un caso
+
+Edita `caseStudy.problem`, `caseStudy.contribution` y `caseStudy.decisions` en `content/projects.json`. Los valores `null` aparecen como pendientes. Añade un resultado verificable en `result` y el repositorio confirmado en `repositoryUrl`. El mismo JSON es el contexto que consume FastAPI: no introduzcas textos ficticios para rellenar la ficha.
+
+Para Seeds, documenta especialmente: quién necesitaba organizar ideas, qué partes implementaste personalmente, qué stack usaste y una decisión con su alternativa y limitación. La ficha del propio portafolio, bajo «Sobre mí», explica decisiones comprobables en este repositorio y sirve de ejemplo de estructura.
+
+### Recorrido de Bitty
+
+El botón «Habla con Bitty» abre acciones relacionadas con la sección actual. «Modo guía» muestra una invitación breve durante el recorrido, sin abrir el panel automáticamente. «Ocultar a Bitty» desactiva sus escenas y deja un control para recuperarlo. Las acciones rápidas y la tarjeta de Seeds son locales; solo una pregunta enviada al formulario llama a la API. Escape cierra el panel y devuelve el foco al botón.
+
+El asistente muestra globos de diálogo descartables y se mueve desde «Mover»: arrastrar con mouse o usar flechas con el asa enfocada. El botón ↺ recupera su posición y abrir el panel lo devuelve al borde para evitar que quede fuera de la pantalla. En móvil se mantiene en su posición y usa toques.
+
+El asistente flotante espera fuera del hero para que allí solo aparezca el Bitty de la escena del nombre. La acción de Seeds continúa disponible en el asistente y los proyectos. El hero reutiliza las poses de sorpresa, brazos alzados y saludo del spritesheet existente. Para mejorar los contactos con las cortinas se pueden crear después dos poses específicas: tirar de una cortina y enderezar una letra con un dedo. No son necesarias para ejecutar la escena actual.
+
+`src/components/BittyCodeLab.tsx` contiene dos demostraciones accesibles: parámetros de un resorte de Motion aplicados a la mirada, y respuestas deterministas por proyecto sin red. El fragmento real de los resortes se importa como texto con `?raw` desde `ProjectArrivalBitty.tsx`, para que siga conectado al código del proyecto. Los valores configurables son solo del laboratorio; no alteran las preferencias de movimiento del visitante ni la animación principal.

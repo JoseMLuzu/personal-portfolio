@@ -277,6 +277,7 @@ h1 span {
     monospace;
 }
 .projects {
+  position: relative;
   min-height: 75vh;
   padding: 7rem clamp(1.25rem, 8vw, 7rem);
   background: #f0f3ff;
@@ -288,6 +289,202 @@ h1 span {
 h2 {
   max-width: 13ch;
   font-size: clamp(2.8rem, 7vw, 6rem);
+}
+
+.project-arrival {
+  position: relative;
+  width: 240px;
+  height: 405px;
+  margin: -1rem auto 0;
+  isolation: isolate;
+}
+.arrival-art {
+  position: absolute;
+  inset: 0 0 28px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.arrival-backlight {
+  position: absolute;
+  inset: 95px -10px 5px;
+  background: radial-gradient(ellipse, #76e4ff55, #a9bdff20 45%, transparent 70%);
+  z-index: -1;
+}
+.arrival-rig {
+  position: absolute;
+  inset: 0;
+  transform-origin: 78px 0;
+}
+.arrival-ground, .arrival-shadow, .arrival-impact {
+  position: absolute;
+  left: 50px;
+  top: 367px;
+  width: 140px;
+  height: 9px;
+  border-radius: 50%;
+}
+.arrival-ground {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #2459e866, transparent);
+}
+.arrival-shadow {
+  opacity: 0;
+  background: #14245f;
+  filter: blur(5px);
+}
+.arrival-impact {
+  opacity: 0;
+  height: 12px;
+  border: 2px solid #2459e8;
+}
+.project-arrival-rope {
+  position: absolute;
+  top: -12px;
+  left: 51px;
+  width: 54px;
+  height: 84px;
+  background: url("/assets/bitty-rope.png") center / 100% 100% no-repeat;
+  opacity: 0;
+  transform-origin: top center;
+  image-rendering: pixelated;
+}
+.arrival-pose {
+  position: absolute;
+  display: block;
+  opacity: 0;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 5px 4px rgba(22, 54, 118, 0.13));
+  transform-origin: center 90%;
+}
+.project-arrival-hang {
+  top: 20px;
+  left: 12px;
+  width: 210px;
+  height: 315px;
+  object-fit: contain;
+  transform-origin: 31% 14%;
+}
+.project-arrival-fall {
+  top: 118px;
+  left: -2px;
+  width: 240px;
+  height: 200px;
+  object-fit: contain;
+}
+.project-arrival-land {
+  top: 100px;
+  left: 10px;
+  width: 210px;
+  height: 315px;
+  object-fit: contain;
+}
+.project-arrival-final {
+  top: 88px;
+  left: 10px;
+  width: 210px;
+  aspect-ratio: 2 / 3;
+}
+.project-arrival-final-sprite {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: url("/assets/bitty-stand-look-base.png") center / contain no-repeat;
+  image-rendering: pixelated;
+}
+.project-arrival-eye {
+  position: absolute;
+  overflow: hidden;
+  height: 12.5%;
+  border-radius: 50%;
+}
+.project-arrival-eye--left {
+  top: 38.5%;
+  left: 35.5%;
+  width: 16.5%;
+  transform: rotate(-4deg);
+}
+.project-arrival-eye--right {
+  top: 42.4%;
+  left: 54.2%;
+  width: 19%;
+  transform: rotate(3deg);
+}
+.project-arrival-pupil {
+  position: absolute;
+  top: -52%;
+  left: -60%;
+  width: 220%;
+  max-width: none;
+  image-rendering: pixelated;
+}
+.project-arrival.is-static .project-arrival-rope {
+  opacity: 0 !important;
+}
+.project-arrival.is-static .project-arrival-final {
+  opacity: 1 !important;
+  transform: none !important;
+}
+.project-arrival.is-static .arrival-pose:not(.project-arrival-final),
+.project-arrival.is-static .arrival-spark,
+.project-arrival.is-static .arrival-warning,
+.project-arrival.is-static .arrival-impact {
+  display: none;
+}
+.project-arrival.is-static .arrival-shadow {
+  opacity: 0.25;
+}
+.arrival-warning {
+  position: absolute;
+  top: 85px;
+  right: 10px;
+  color: #d38a00;
+  font: 900 40px/1 ui-monospace, monospace;
+  opacity: 0;
+}
+.arrival-spark {
+  position: absolute;
+  top: 352px;
+  left: 118px;
+  width: 5px;
+  height: 5px;
+  background: #2459e8;
+  opacity: 0;
+}
+.arrival-spark:nth-of-type(even) { background: #f4b831; }
+.arrival-caption {
+  position: absolute;
+  top: 155px;
+  left: 10px;
+  right: 10px;
+  padding: 8px 10px;
+  background: #070a18;
+  border: 1px solid #76e4ff;
+  color: #f5f7ff;
+  box-shadow: 3px 3px 0 #76e4ff;
+  font: 500 12px/1.35 ui-monospace, monospace;
+  text-align: center;
+  opacity: 0;
+}
+.arrival-replay {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: transparent;
+  border: 0;
+  padding: 6px 12px;
+  color: #344674;
+  font: 500 12px/1.3 ui-monospace, monospace;
+  cursor: pointer;
+}
+.arrival-replay span { font-size: 18px; vertical-align: middle; }
+.arrival-replay:hover { color: #2459e8; }
+.arrival-replay:disabled { opacity: 0; cursor: default; }
+.project-arrival.is-static .arrival-replay { display: none; }
+@media (max-width: 600px) {
+  .project-arrival { margin-top: -2rem; }
 }
 
 .bitty-scene {
@@ -593,7 +790,7 @@ h2 {
   max-width: 1200px;
   margin: 0 auto 5rem;
 }
-.section-heading > p {
+.project-heading-aside > p {
   max-width: 31rem;
   margin: 0;
   color: #4f5770;
@@ -917,11 +1114,72 @@ main:has(.bitty-scene.is-presenting) .bitty-chat {
   background: #0e1530;
   border: 1px solid rgba(118, 228, 255, 0.6);
   box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.35);
+  max-height: min(680px, calc(100dvh - 110px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .chat-heading {
-  display: grid;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   gap: 0.2rem;
   margin-bottom: 1rem;
+}
+
+/* Guide controls remain optional; the content never depends on them. */
+.guide-settings { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+.guide-settings button, .guide-actions button, .guide-actions a, .guide-teaser button,
+.chat-heading button, .restore-bitty {
+  font-family: inherit;
+  font-size: .875rem;
+  line-height: 1.4;
+  cursor: pointer;
+  border: 1px solid #536b99;
+  background: #182142;
+  color: #def5ff;
+  padding: .5rem .65rem;
+  border-radius: 3px;
+  text-decoration: none;
+}
+.guide-settings button[aria-pressed="true"] { background: #76e4ff; color: #070a18; }
+.guide-context { padding: .85rem; border-left: 2px solid #76e4ff; background: #141d3d; margin-bottom: 1rem; }
+.guide-context p { font-size: .95rem; line-height: 1.55; margin: 0 0 .8rem; }
+.guide-context .guide-location { color: #76e4ff; font-weight: 700; }
+.guide-actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.guide-actions button:hover, .guide-actions a:hover { background: #273758; }
+.guide-teaser { max-width: min(290px, calc(100vw - 2.5rem)); margin: 0 0 .6rem auto; padding: .7rem; color: #f5f7ff; background: #0e1530; border: 1px solid #76e4ff; box-shadow: 4px 4px 0 #070a1833; }
+.guide-teaser span { display: block; margin-bottom: .5rem; font-size: .875rem; }
+.guide-seed-card { background: #d8ff5b; padding: 1rem; margin-bottom: 1rem; color: #090d1e; border: 2px solid #f5f7ff; }
+.guide-seed-card strong, .guide-seed-card small { display: block; }
+.guide-seed-card strong { font-size: 1.5rem; margin-top: .3rem; }
+.guide-seed-card p { font-size: .95rem; line-height: 1.5; }
+.restore-bitty { background: #0e1530; box-shadow: 2px 2px 0 #76e4ff; }
+.bitty-hidden .bitty-scene, .bitty-hidden .project-arrival, .bitty-hidden .project-bitty { display: none; }
+.bitty-hidden .hero .falling-piece { transform: none !important; opacity: 1 !important; animation: none !important; }
+.guide-pose-hostiqr { background-image: url('/assets/bitty-project-poses.png'); background-size: 200% 100%; background-position: 0 50%; }
+.guide-pose-fintrack { background-image: url('/assets/bitty-project-poses.png'); background-size: 200% 100%; background-position: 100% 50%; }
+.guide-pose-sobre-mi, .guide-pose-final { background: url('/assets/bitty-stand.png') center / contain no-repeat; }
+.case-facts { display: grid; gap: 1rem; margin: 1rem 0; }
+.case-facts > div { padding-bottom: .9rem; border-bottom: 1px solid #aab4ce55; }
+.case-facts dt { font-size: .9rem; font-weight: 750; margin-bottom: .4rem; }
+.case-facts dd { margin: 0; font-size: 1rem; line-height: 1.6; }
+.portfolio-engineering { max-width: 1200px; margin: 4rem auto 0; padding: clamp(1.2rem, 3vw, 2.5rem); border: 1px solid #76e4ff55; background: #111a34; }
+.portfolio-engineering h3 { font-size: clamp(1.6rem, 3vw, 2.5rem); margin: .6rem 0 1rem; }
+.portfolio-engineering > p { line-height: 1.6; }
+.portfolio-engineering .case-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; }
+.portfolio-engineering .case-facts dt { color: #76e4ff; }
+.portfolio-engineering .text-action { color: #76e4ff; }
+.engineering-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.bitty-rest { width: 100px; min-height: 140px; flex: 0 0 100px; }
+.bitty-rest button { background: transparent; color: #76e4ff; border: 0; cursor: pointer; padding: 0; font: inherit; font-size: .8rem; }
+.bitty-rest img { display: block; width: 100px; height: 120px; object-fit: contain; image-rendering: pixelated; }
+.project-card, #criterio-tecnico, #sobre-mi { scroll-margin-top: 2rem; }
+footer { padding-bottom: 6rem; }
+@media (max-width: 600px) {
+  .portfolio-engineering .case-facts { grid-template-columns: 1fr; }
+  .bitty-chat { right: .75rem; bottom: max(.75rem, env(safe-area-inset-bottom)); }
+  .chat-panel { width: min(23rem, calc(100vw - 1.5rem)); }
+  .chat-toggle .chat-bitty-sprite { display: block; }
 }
 .chat-heading strong {
   color: var(--cyan);
@@ -1174,4 +1432,51 @@ main:has(.bitty-scene.is-presenting) .bitty-chat {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* A character-first assistant, with a quiet, dismissible speech balloon. */
+.clippy-bounds { position: fixed; inset: 12px; pointer-events: none; }
+.clippy-assistant .chat-toggle { flex-direction: column; gap: 0; padding: 0; border: 0; background: transparent; box-shadow: none; }
+.clippy-assistant .chat-bitty-sprite { width: 100px; height: 108px; filter: drop-shadow(0 5px 4px #090d1e30); }
+.clippy-assistant .chat-toggle > span:last-child { display: block; padding: .4rem .7rem; background: #0e1530; border: 1px solid #76e4ff; color: #f5f7ff; border-radius: 3px; font-size: .8rem; }
+.clippy-assistant .guide-pose-sobre-mi, .clippy-assistant .guide-pose-final { height: 140px; }
+.clippy-balloon { position: relative; padding: 1rem; max-width: 290px; background: #fff7cf; border: 1px solid #463f2c; border-radius: 12px; color: #27251c; box-shadow: 3px 4px 0 #090d1e20; }
+.clippy-balloon::after { content: ''; position: absolute; bottom: -9px; right: 44px; width: 16px; height: 16px; background: #fff7cf; border-right: 1px solid #463f2c; border-bottom: 1px solid #463f2c; transform: rotate(45deg); }
+.clippy-balloon > span { font-weight: 700; padding-right: 12px; }
+.clippy-balloon p { margin: .5rem 0 .7rem; font-size: .9rem; line-height: 1.5; }
+.clippy-balloon > div { display: flex; gap: .4rem; flex-wrap: wrap; }
+.clippy-balloon button { background: transparent; color: #27395b; border-color: #827e64; font-size: .8rem; }
+.clippy-balloon .dismiss-tip { position: absolute; top: 3px; right: 5px; border: 0; padding: 3px 7px; font-size: 1rem; }
+.clippy-position-controls { display: flex; gap: .5rem; justify-content: flex-end; margin: .5rem 0 -.3rem; }
+.clippy-position-controls button { border: 0; background: #f0f3ff; color: #344674; border-radius: 3px; padding: .25rem .4rem; cursor: pointer; font-size: .75rem; }
+.clippy-position-controls .clippy-grab { cursor: grab; touch-action: none; }
+.clippy-grab:active { cursor: grabbing; }
+.clippy-assistant .chat-panel { max-height: calc(100dvh - 220px); }
+.chat-heading strong small { display: block; margin-top: .3rem; font: 400 .75rem/1.4 ui-monospace, monospace; color: #aeb8d4; }
+.bitty-code-lab { max-width: 1200px; margin: 4rem auto 0; }
+.bitty-code-lab h3 { font-size: clamp(1.6rem, 3vw, 2.5rem); margin-bottom: 1rem; }
+.bitty-code-lab p { line-height: 1.65; }
+.lab-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+.lab-grid article { min-width: 0; padding: clamp(1rem, 3vw, 2rem); border: 1px solid #76e4ff40; background: #111a34; }
+.lab-grid h4 { font-size: 1.1rem; color: #76e4ff; margin: 0 0 1rem; }
+.lab-grid pre { padding: 1rem; background: #070a18; border: 1px solid #ffffff15; overflow-x: auto; font: 400 .85rem/1.65 ui-monospace, monospace; color: #adf0cf; }
+.lab-grid summary { cursor: pointer; padding: .7rem 0; color: #76e4ff; }
+.lab-eye-demo { display: grid; place-items: center; height: 260px; background: radial-gradient(ellipse, #76e4ff15, transparent 70%); border: 1px dashed #76e4ff40; }
+.lab-bitty { position: relative; width: 160px; height: 240px; background: url('/assets/bitty-stand-look-base.png') center / contain no-repeat; image-rendering: pixelated; }
+.lab-controls { display: grid; gap: .6rem; margin: 1rem 0; }
+.lab-controls label { display: flex; justify-content: space-between; font-size: .95rem; }
+.lab-controls input[type='range'] { width: 100%; min-height: 28px; accent-color: #76e4ff; }
+.lab-controls > div, .lab-projects { display: flex; gap: .5rem; flex-wrap: wrap; }
+.lab-controls button { border: 1px solid #536b99; background: #182142; color: #def5ff; padding: .5rem .65rem; font: inherit; font-size: .875rem; cursor: pointer; }
+.lab-controls button[aria-pressed='true'] { color: #090d1e; background: #76e4ff; }
+.lab-local-reply { border-left: 2px solid #d8ff5b; padding: 1rem; background: #192541; }
+.lab-local-reply a { color: #76e4ff; }
+.lab-local-reply p { font-size: .95rem; }
+@media (max-width: 600px) {
+  .lab-grid { grid-template-columns: 1fr; }
+  .clippy-assistant .chat-bitty-sprite { width: 65px; height: 65px; }
+  .clippy-assistant .guide-pose-sobre-mi, .clippy-assistant .guide-pose-final { height: 85px; }
+  .clippy-assistant .chat-panel { max-height: calc(100dvh - 180px); }
+  .clippy-assistant .clippy-position-controls { display: none; }
+  .clippy-balloon { max-width: min(260px, calc(100vw - 2rem)); }
 }
