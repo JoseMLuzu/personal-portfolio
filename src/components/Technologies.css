@@ -1,0 +1,82 @@
+.technologies { position: relative; isolation: isolate; overflow: hidden; background: #080e20; color: #fff5e6; padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 8vw, 7rem) 13rem; scroll-margin-top: 2rem; }
+.technologies-inner { position: relative; z-index: 2; max-width: 1200px; margin: auto; }
+.technologies-header { display: grid; gap: 2.25rem; margin-bottom: clamp(3.5rem, 6vw, 6rem); }
+.technologies .eyebrow { color: #9ba5d0; letter-spacing: .1em; }
+.technologies h2 { margin: 0; font-size: clamp(3rem, 7vw, 6rem); line-height: 1.08; letter-spacing: -.055em; }
+.technology-title-mark { position: relative; display: inline-block; }
+.technology-title-mark::after { content: ''; position: absolute; left: 1%; right: 3%; bottom: -.12em; height: .075em; border-radius: 60% 75% 40% 50%; background: #ff766f; transform: rotate(-1.5deg); }
+.technologies-header > p { margin: 0; max-width: 56rem; color: #a8b5cf; font-size: .9375rem; line-height: 1.7; }
+.technology-legend-dot { display: inline-block; width: .35rem; height: .35rem; border-radius: 50%; background: #76e4ff; vertical-align: middle; margin-right: .35rem; }
+.technology-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3.5rem 3rem; }
+.technology-group { min-width: 0; }
+.technology-group > header { margin-bottom: 1.4rem; }
+.technology-group h3 { margin: 0; font-size: clamp(1.5rem, 2.7vw, 2.4rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.15; }
+.technology-group ul { margin: 0; padding: 0; list-style: none; }
+.technology-group li { padding: .65rem 0; }
+.technology-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+.technology-name { position: relative; display: inline-block; color: #c5cbed; font: 400 clamp(1.125rem, 1.8vw, 1.65rem)/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; transform-origin: center bottom; }
+.technology-name[data-experience]::before { content: ''; position: absolute; width: .3rem; height: .3rem; border-radius: 50%; background: #76e4ff; left: -.8rem; top: .65em; }
+.technology-buoy { display: inline-block; }
+.technology-context { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.technology-note { margin: .3rem 0 0; max-width: 22rem; color: #a8b5cf; font-size: .875rem; line-height: 1.6; }
+@media (max-width: 1000px) { .technology-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .technologies { padding-bottom: 8.5rem; }
+  .technologies-header { gap: 1.75rem; margin-bottom: 3rem; }
+  .technology-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .technology-group h3 { font-size: 1.85rem; }
+  .technology-name { font-size: 1.25rem; }
+}
+
+/* A fixed-size lane reserved in the initial layout; no layout changes on play. */
+.technology-tide { --whale-width: 240px; position: absolute; z-index: 1; inset: auto 0 0; height: 33%; pointer-events: none; }
+.tide-water { position: absolute; inset: 0; background: url('/assets/bitty-cyan-foam-water.png') left bottom / auto 170% repeat-x; image-rendering: pixelated; opacity: 0; transform: translateY(100%); transition: transform 1400ms cubic-bezier(.22,.61,.36,1), opacity 900ms ease-out; }
+.tide-whale { position: absolute; left: calc(-1 * var(--whale-width)); bottom: 12px; width: var(--whale-width); aspect-ratio: 3 / 2; opacity: 0; }
+.tide-rider { position: absolute; inset: 0; transition: transform 1100ms ease-out; }
+.tide-rider img { position: absolute; inset: 0; width: 100%; height: 100%; image-rendering: pixelated; transition: opacity 140ms ease; }
+/* Individual scale survives the bobbing animation's transform keyframes. */
+.tide-whale-ride { scale: -1 1; opacity: 0; }
+.tide-wake { position: absolute; left: -65px; bottom: 4px; width: 95px; height: 28px; background: url('/assets/bitty-cyan-foam-water.png') center / 200px 75px; opacity: .55; image-rendering: pixelated; }
+.technologies:is(.tide-rising,.tide-floating,.tide-crossing,.tide-waving,.tide-returning,.tide-disembarking) .tide-water { opacity: .4; transform: translateY(0); }
+.technologies.tide-draining .tide-water { transition-duration: 1400ms; }
+.technologies:is(.tide-crossing,.tide-waving,.tide-returning,.tide-disembarking) .tide-whale { opacity: 1; animation: technology-whale-roundtrip 5200ms linear both; }
+.technologies:is(.tide-crossing,.tide-waving,.tide-returning) .tide-rider { transform: translateY(-24px); }
+.technologies:is(.tide-crossing,.tide-waving,.tide-returning) .tide-rider img { animation: technology-whale-float 1100ms ease-in-out infinite; }
+.technologies:is(.tide-crossing,.tide-returning) .tide-whale-wave { opacity: 0; }
+.technologies:is(.tide-crossing,.tide-returning) .tide-whale-ride { opacity: 1; }
+.technologies.tide-crossing .tide-whale-ride { scale: 1 1; }
+.technologies.tide-crossing .tide-wake { left: auto; right: -65px; }
+.technologies.tide-disembarking .tide-rider { animation: technology-disembark 800ms ease-in both; }
+.technologies:is(.tide-waving,.tide-disembarking,.tide-draining,.tide-settled) .tide-wake { opacity: 0; transition: opacity 500ms; }
+/* Outer span follows the water level; inner span rocks in the passing wake. */
+.technology-name[data-tide-react] { transition: transform 900ms var(--tide-lift-delay) cubic-bezier(.22,.61,.36,1); }
+.technologies:is(.tide-floating,.tide-crossing,.tide-waving,.tide-returning,.tide-disembarking) .technology-name[data-tide-react] { transform: translateY(var(--tide-rise)) rotate(var(--tide-tilt)); }
+.technologies:is(.tide-floating,.tide-crossing,.tide-waving,.tide-returning,.tide-disembarking) .technology-name[data-tide-react] .technology-buoy { animation: technology-word-float 850ms var(--tide-lift-delay) ease-in-out infinite; }
+.technologies:is(.tide-draining,.tide-settled) .technology-name[data-tide-react] { transform: translateX(var(--tide-drift)) rotate(var(--tide-rest-tilt)); transition-duration: 1100ms; transition-delay: 0ms; }
+.technologies .technology-row { text-shadow: 0 1px 4px #080e20; }
+.tide-companion-arrived .guide-teaser { display: none; }
+.tide-companion-arrived .chat-toggle { animation: technology-companion-land 500ms ease-out both; }
+.technologies.tide-done .technology-tide { visibility: hidden; }
+.bitty-hidden .tide-whale { display: none; }
+@keyframes technology-whale-roundtrip { 0% { transform: translateX(var(--whale-travel)); } 46.154%,53.846% { transform: translateX(var(--whale-left-stop)); } 100% { transform: translateX(var(--whale-travel)); } }
+@keyframes technology-disembark { from { transform: translateY(-24px); opacity: 1; } to { transform: translateY(65px); opacity: 0; } }
+@keyframes technology-companion-land { from { transform: translateY(-35px) rotate(-8deg); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes technology-whale-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes technology-word-float { 0%,100% { transform: translate(0,0); } 50% { transform: translate(3px,-4px) rotate(1deg); } }
+@media (max-width: 600px) {
+  .technology-tide { --whale-width: 128px; height: min(24%, 240px); }
+  .tide-water { background-size: auto 170%; }
+  .tide-whale { bottom: 10px; }
+  .tide-wake { left: -34px; width: 54px; height: 18px; }
+  .technologies:is(.tide-floating,.tide-crossing,.tide-waving,.tide-returning,.tide-disembarking) .technology-name[data-tide-react] { transform: translateY(calc(var(--tide-rise) * .65)) rotate(calc(var(--tide-tilt) * .5)); }
+  .technologies:is(.tide-draining,.tide-settled) .technology-name[data-tide-react] { transform: translateX(calc(var(--tide-drift) * .5)) rotate(calc(var(--tide-rest-tilt) * .7)); }
+  .technologies:is(.tide-crossing,.tide-waving,.tide-returning) .tide-rider { transform: translateY(-18px); }
+  .technologies.tide-crossing .tide-wake { right: -34px; }
+  @keyframes technology-word-float { 0%,100% { transform: none; } 50% { transform: translate(1px,-2px) rotate(.5deg); } }
+  @keyframes technology-whale-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .technology-tide { display: none; }
+  .technologies .technology-name, .technologies .technology-buoy { animation: none !important; transform: none !important; transition: none !important; }
+  .tide-companion-arrived .chat-toggle { animation: none; }
+}
