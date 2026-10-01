@@ -1,9 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useBittyGuide } from './BittyGuide'
 import type { Project } from '../types'
 import { ProjectBitty } from './ProjectBitty'
 
 export function ProjectCard({ project, featured = false }: { project: Project; featured?: boolean }) {
   const [expanded, setExpanded] = useState(false)
+  const guide = useBittyGuide()
+  useEffect(() => {
+    if (guide?.selectedProject === project.slug) setExpanded(true)
+  }, [guide?.selectedProject, guide?.projectRequest, project.slug])
   const detailId = `project-detail-${project.slug}`
 
   return (
@@ -36,6 +41,13 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
       {expanded && (
         <div className="project-detail" id={detailId}>
           <p>{project.detail}</p>
+          <dl className="case-facts">
+            <div><dt>Problema</dt><dd>{project.caseStudy?.problem ?? 'Por documentar: el problema original y quién lo tenía.'}</dd></div>
+            <div><dt>Mi contribución</dt><dd>{project.caseStudy?.contribution ?? 'Por documentar: responsabilidad personal y alcance del trabajo.'}</dd></div>
+            <div><dt>Decisiones técnicas</dt><dd>{project.caseStudy?.decisions ?? 'Por documentar: alternativas consideradas, elección y sus límites.'}</dd></div>
+            <div><dt>Resultado</dt><dd>{project.result ?? 'Sin resultados documentados todavía.'}</dd></div>
+          </dl>
+          {project.repositoryUrl && <a href={project.repositoryUrl} target="_blank" rel="noreferrer">Revisar código ↗</a>}
           <p className="review-label">Datos por revisar</p>
           <ul>{project.needsReview.map((item) => <li key={item}>{item}</li>)}</ul>
         </div>
