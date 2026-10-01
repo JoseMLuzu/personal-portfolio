@@ -1,27 +1,63 @@
 import { FaGithub } from "react-icons/fa";
+import "./Navbar.css";
 
 export const Navbar = () => {
   const githubUrl = import.meta.env.VITE_GITHUB_URL?.trim();
 
   return (
-    <nav className="nav" aria-label="Navegación principal">
+    <nav className="nav nav-with-bitty" aria-label="Navegación principal">
       <a className="brand" href="#inicio">
         JML<span aria-hidden="true">_</span>
       </a>
       <div className="nav-links">
-        <a href="#proyectos">Proyectos</a>
-        <a className="nav-about-link" href="#sobre-mi">
+        <a className="nav-bitty-link nav-bitty-projects" href="#proyectos">
+          Proyectos
+          <span className="nav-bitty-stage" aria-hidden="true">
+            <img
+              className="nav-bitty"
+              src="/assets/bitty-nav-climb.png"
+              alt=""
+              aria-hidden="true"
+              width="1024"
+              height="1536"
+            />
+          </span>
+        </a>
+        <a
+          className="nav-about-link nav-bitty-link nav-bitty-about"
+          href="#sobre-mi"
+        >
           Sobre mí
+          <span className="nav-bitty-stage" aria-hidden="true">
+            <img
+              className="nav-bitty"
+              src="/assets/bitty-nav-wink.png"
+              alt=""
+              aria-hidden="true"
+              width="1536"
+              height="1024"
+            />
+          </span>
         </a>
         {githubUrl ? (
           <a
-            className="github-link"
+            className="github-link nav-bitty-link nav-bitty-github"
             href={githubUrl}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="GitHub de José Manuel (abre en una pestaña nueva)"
           >
             <FaGithub aria-hidden="true" />
+            <span className="nav-bitty-stage" aria-hidden="true">
+              <img
+                className="nav-bitty"
+                src="/assets/bitty-nav-github-kiss.png"
+                alt=""
+                aria-hidden="true"
+                width="1212"
+                height="1298"
+              />
+            </span>
           </a>
         ) : (
           <span

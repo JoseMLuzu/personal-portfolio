@@ -1,0 +1,91 @@
+.nav.nav-with-bitty { top: 2.75rem; }
+.nav-bitty-link {
+  position: relative;
+}
+.nav-bitty-stage {
+  position: absolute;
+  bottom: calc(100% - .15rem);
+  left: 50%;
+  width: 4.25rem;
+  height: 4.75rem;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, .45rem);
+  transform-origin: top center;
+  transition:
+    opacity 180ms ease,
+    visibility 180ms,
+    transform 350ms cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  pointer-events: none;
+  user-select: none;
+}
+.nav-bitty {
+  position: absolute;
+  bottom: -1.5rem;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+  pointer-events: none;
+  transform-origin: bottom center;
+}
+/* Lower body stays behind the word, making the upper half climb into view. */
+.nav-bitty-about .nav-bitty-stage {
+  width: 6.5rem;
+  height: 4.35rem;
+  bottom: calc(100% - .45rem);
+  overflow: visible;
+}
+.nav-bitty-about .nav-bitty { bottom: 0; }
+/* Reserve a side seat so the kiss pose stays inside the viewport. */
+.nav-with-bitty .nav-links { padding-right: 5.25rem; }
+.nav-bitty-github .nav-bitty-stage {
+  width: 5rem;
+  height: 5.36rem;
+  top: 50%;
+  bottom: auto;
+  left: calc(100% - .65rem);
+  overflow: visible;
+  transform: translate(.5rem, -50%) rotate(6deg);
+  transform-origin: left center;
+}
+.nav-bitty-github .nav-bitty { bottom: 0; }
+.nav-bitty-link:focus-visible .nav-bitty-stage {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+.nav-bitty-projects:focus-visible .nav-bitty { animation: nav-bitty-climb 550ms ease-out both; }
+@media (hover: hover) and (pointer: fine) {
+  .nav-bitty-link:hover .nav-bitty-stage {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+  .nav-bitty-projects:hover .nav-bitty { animation: nav-bitty-climb 550ms ease-out both; }
+  .nav-bitty-github:hover .nav-bitty-stage { transform: translate(0, -50%); }
+}
+.nav-bitty-github:focus-visible .nav-bitty-stage { transform: translate(0, -50%); }
+@media (max-width: 600px) {
+  .nav-with-bitty .nav-links { padding-right: 4.1rem; }
+  .nav-bitty-github .nav-bitty-stage { width: 4rem; height: 4.29rem; }
+}
+@keyframes nav-bitty-climb {
+  0% { transform: translateY(1.4rem) rotate(-8deg); }
+  55% { transform: translateY(.3rem) rotate(4deg); }
+  80% { transform: translateY(.45rem) rotate(-2deg); }
+  100% { transform: none; }
+}
+.bitty-hidden .nav-bitty-stage {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-bitty-stage {
+    transition: none;
+    transform: translate(-50%, 0);
+  }
+  .nav-bitty-link .nav-bitty { animation: none !important; }
+  .nav-bitty-github .nav-bitty-stage { transform: translate(0, -50%); }
+}
