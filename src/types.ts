@@ -8,6 +8,12 @@ export type Project = {
   stack: string[]
   result: string | null
   needsReview: string[]
+  repositoryUrl?: string | null
+  caseStudy?: {
+    problem: string | null
+    contribution: string | null
+    decisions: string | null
+  }
 }
 
 export type BittyAction =

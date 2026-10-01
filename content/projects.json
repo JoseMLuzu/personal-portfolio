@@ -8,6 +8,8 @@
     "detail": "La demo pública muestra captura rápida, organización de ideas y proyectos, calendario y vistas para conectar y retomar el trabajo. La contribución personal y las decisiones técnicas todavía deben documentarse.",
     "stack": ["Web app"],
     "result": null,
+    "repositoryUrl": null,
+    "caseStudy": { "problem": null, "contribution": null, "decisions": null },
     "needsReview": ["Problema original", "Contribución personal", "Stack confirmado", "Resultado"]
   },
   {
@@ -19,6 +21,8 @@
     "detail": "La propuesta y el acceso al panel están visibles en la demo pública. El flujo concreto para huéspedes, la contribución personal, las decisiones técnicas y los resultados todavía deben documentarse.",
     "stack": ["Web app"],
     "result": null,
+    "repositoryUrl": null,
+    "caseStudy": { "problem": null, "contribution": null, "decisions": null },
     "needsReview": ["Problema original", "Usuarios", "Contribución personal", "Stack confirmado", "Resultado"]
   },
   {
@@ -30,6 +34,8 @@
     "detail": "La ficha queda preparada para ampliar el problema, la contribución personal, las decisiones técnicas y el resultado sin inventar datos.",
     "stack": [],
     "result": null,
+    "repositoryUrl": null,
+    "caseStudy": { "problem": null, "contribution": null, "decisions": null },
     "needsReview": ["Descripción", "Estado actual", "Contribución personal", "Stack", "Resultado", "Enlace de demo"]
   }
 ]
