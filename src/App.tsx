@@ -1,9 +1,7 @@
 import { BittyChat } from "./components/BittyChat";
 import { Hero } from "./components/Hero";
-import { ProjectArrivalBitty } from "./components/ProjectArrivalBitty";
+import { Projects } from "./components/Projects";
 import { Navbar } from "./components/navbar";
-import { ProjectCard } from "./components/ProjectCard";
-import { projects } from "./content/projects";
 import { BittyGuideProvider, BittyRest } from "./components/BittyGuide";
 import { BittyCodeLab } from "./components/BittyCodeLab";
 import { Technologies } from "./components/Technologies";
@@ -13,38 +11,7 @@ export function App() {
     <BittyGuideProvider><main>
       <Navbar />
       <Hero />
-      <section
-        className="projects"
-        id="proyectos"
-        aria-labelledby="projects-title"
-      >
-        <header className="section-heading">
-          <div>
-            <p className="eyebrow">Trabajo seleccionado</p>
-            <h2 id="projects-title">
-              Proyectos reales,
-              <br />
-              sin humo.
-            </h2>
-          </div>
-          <div className="project-heading-aside">
-            <p>
-              Lo que está confirmado se muestra. Lo que falta, se marca. Cada caso
-              está preparado para crecer con contexto y resultados verificables.
-            </p>
-            <ProjectArrivalBitty />
-          </div>
-        </header>
-        <div className="project-grid">
-          {projects.map((project, index) => (
-            <ProjectCard
-              key={project.slug}
-              project={project}
-              featured={index === 0}
-            />
-          ))}
-        </div>
-      </section>
+      <Projects />
       <Technologies />
       <section className="about" id="sobre-mi">
         <p className="eyebrow">Sobre mí</p>
@@ -67,7 +34,7 @@ export function App() {
           </div><BittyRest stop="sobre-mi" /></div>
           <p>La interacción de Bitty también es una muestra de cómo está construido el sitio.</p>
           <dl className="case-facts">
-            <div><dt>2D con Motion</dt><dd>Una línea de tiempo sincroniza poses, cuerda, caída e impacto. Se precargan las imágenes y se respeta el movimiento reducido.</dd></div>
+            <div><dt>Animación 2D</dt><dd>GSAP coordina el paracaídas con el scroll y la inundación del stack. Motion anima al asistente. Las escenas respetan el movimiento reducido.</dd></div>
             <div><dt>Acciones inmediatas</dt><dd>Mostrar un proyecto y navegar son acciones locales. No requieren una llamada a la IA.</dd></div>
             <div><dt>IA con límites</dt><dd>FastAPI conserva la clave en el servidor. El modelo genera texto; las acciones se eligen de una lista permitida. Sin clave o ante un error, hay respuestas preparadas.</dd></div>
             <div><dt>Un límite consciente</dt><dd>Las fichas distinguen los datos conocidos de lo que falta documentar. El recorrido funciona sin activar al guía.</dd></div>

@@ -21,8 +21,8 @@ describe('portfolio navigation', () => {
   it('exposes every project without requiring Bitty', () => {
     const { container } = render(<App />)
     expect(screen.getByRole('navigation', { name: /navegación principal/i })).toBeVisible()
-    expect(container.querySelector('.project-arrival')).toBeInTheDocument()
-    expect(container.querySelectorAll('.project-arrival .project-arrival-pupil')).toHaveLength(2)
+    expect(container.querySelector('.projects-sky')).toBeInTheDocument()
+    expect(container.querySelector('.sky-diver')).toHaveAttribute('aria-hidden', 'true')
     expect(screen.getByRole('heading', { name: 'Seeds' })).toBeVisible()
     expect(screen.getByRole('heading', { name: 'HostiQR' })).toBeVisible()
     expect(screen.getByRole('heading', { name: 'FinTrack' })).toBeVisible()

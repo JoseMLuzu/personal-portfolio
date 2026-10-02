@@ -1,0 +1,81 @@
+/* Experimental sky. Scoped so the original project treatment remains recoverable. */
+.projects.projects-sky {
+  --sky-lane: clamp(170px, 21vw, 280px);
+  isolation: isolate;
+  overflow: clip;
+  padding-block: clamp(5rem, 10vw, 8rem) 9rem;
+  color: #fff5e6;
+  background: linear-gradient(180deg, #102b53 0%, #246599 30%, #3c92bd 65%, #286b94 90%, #122e51 100%);
+}
+.project-sky-art { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.sky-cloud { position: absolute; width: clamp(250px, 42vw, 650px); height: auto; opacity: .5; image-rendering: pixelated; }
+.sky-cloud-0 { top: 1%; left: -11%; opacity: .24; }
+.sky-cloud-1 { top: 17%; right: -10%; width: 48%; opacity: .55; }
+.sky-cloud-2 { top: 37%; left: -14%; }
+.sky-cloud-3 { top: 52%; right: -16%; opacity: .3; }
+.sky-cloud-4 { top: 72%; left: -8%; width: 50%; opacity: .34; }
+.sky-cloud-5 { bottom: -3%; right: -8%; opacity: .55; }
+.projects-sky-content { position: relative; z-index: 2; max-width: 1200px; margin-inline: auto; padding-right: var(--sky-lane); }
+.projects-sky .section-heading { grid-template-columns: 1fr; gap: 1.75rem; margin-bottom: 4rem; }
+.projects-sky h2 { font-size: clamp(3rem, 6.5vw, 6.2rem); line-height: .98; letter-spacing: -.065em; }
+.projects.projects-sky .eyebrow { color: #aeeaff; }
+.projects-sky .project-heading-aside > p { color: #e1edfa; font-size: 1rem; max-width: 38rem; }
+.projects-sky .project-grid { grid-template-columns: 1fr; gap: 2rem; border: 0; }
+.projects-sky .project-card, .projects-sky .project-card.featured {
+  display: flex; flex-direction: column; grid-row: auto; min-height: 21rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem); border: 1px solid #c6efff55;
+  border-radius: 12px; background: #0b213bf2;
+  box-shadow: 0 16px 38px #07142e20;
+  transition: background-color 250ms ease, border-color 250ms ease;
+}
+.projects-sky .project-card:hover, .projects-sky .project-card:focus-within { background: #102c4a; border-color: #aeeaffaa; }
+.projects-sky .project-card h3, .projects-sky .project-card:not(.featured) h3 { margin: 2rem 0 1.25rem; font-size: clamp(2.6rem, 5.5vw, 5rem); letter-spacing: -.06em; }
+.projects-sky .project-card > p { color: #d5e4f4; font-size: 1rem; }
+.projects-sky .project-index { color: #87e5ff; }
+.projects-sky .project-status { color: #d7ebfb; border-color: #b9e6ff45; }
+.projects-sky .project-actions { margin-top: auto; }
+.projects-sky .project-actions a, .projects-sky .text-action { color: #a8ecff; }
+.projects-sky .no-link { color: #b4c7df; }
+.projects-sky .project-detail { background: #08172dcc; border-color: #aeeaff40; }
+.projects-sky .project-detail, .projects-sky .project-detail li, .projects-sky .project-detail dd { color: #d5e4f4; }
+.projects-sky .project-detail dt, .projects-sky .review-label { color: #a8ecff; }
+/* One airborne Bitty in this experiment, not three simultaneous hover mascots. */
+.projects-sky .project-bitty { display: none; }
+.sky-diver {
+  position: absolute; z-index: 1; top: 48px; right: clamp(12px, 3vw, 64px);
+  width: clamp(150px, 18vw, 240px); aspect-ratio: 2 / 3.3;
+  pointer-events: none; user-select: none;
+}
+.sky-diver-rig { position: absolute; inset: 0; transform-origin: 50% 18%; }
+.sky-diver img { position: absolute; display: block; height: auto; image-rendering: pixelated; }
+.sky-parachute { width: 100%; top: 0; left: 0; }
+.sky-bitty { width: 58%; top: 49%; left: 27%; }
+.sky-diver-caption {
+  position: absolute; top: 100%; right: 0; width: 100%; padding: .6rem .75rem;
+  color: #fff5e6; background: #0b213bed; border: 1px solid #aeeaff66;
+  border-radius: 8px 8px 2px 8px; text-align: center; font: .75rem/1.4 ui-monospace, monospace;
+}
+.bitty-hidden .sky-diver { display: none; }
+/* Keep chat reachable without a second mascot obscuring the parachute. */
+.sky-guide-compact .clippy-balloon, .sky-guide-compact .clippy-position-controls, .sky-guide-compact .chat-toggle .chat-bitty-sprite { display: none; }
+@media (max-width: 900px) {
+  .projects.projects-sky { --sky-lane: 145px; padding-inline: 1.5rem; }
+  .sky-diver { right: 8px; width: 140px; }
+}
+@media (max-width: 600px) {
+  .projects.projects-sky { --sky-lane: 70px; padding-inline: 1.25rem; padding-bottom: 5rem; }
+  .projects-sky .section-heading { margin-bottom: 2.5rem; gap: 1.5rem; }
+  .projects-sky h2 { font-size: clamp(2rem, 8.5vw, 3rem); }
+  .projects-sky .project-card, .projects-sky .project-card.featured { min-height: 0; padding: 1.2rem 1rem; border-radius: 8px; }
+  .projects-sky .project-card h3, .projects-sky .project-card:not(.featured) h3 { font-size: clamp(1.75rem, 7.8vw, 2.6rem); }
+  .projects-sky .project-card header { flex-wrap: wrap; gap: .75rem; }
+  .projects-sky .project-actions { gap: .5rem; }
+  .projects-sky .project-detail { padding: .75rem; }
+  .sky-diver { top: 40px; right: 3px; width: 76px; }
+  .sky-diver-caption { display: none; }
+  .sky-cloud { width: 90%; opacity: .24; }
+  .sky-cloud-1, .sky-cloud-4 { width: 95%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sky-diver, .sky-diver-rig, .sky-cloud { transform: none !important; }
+}
