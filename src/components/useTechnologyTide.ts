@@ -1,125 +1,101 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
+import gsap from 'gsap'
+import { useGSAP } from '@gsap/react'
+import { createTechnologyFlood, floodGeometry, type TidePhase } from '../animations/technologyFlood'
 
-export type TidePhase = 'idle' | 'rising' | 'floating' | 'crossing' | 'waving' | 'returning' | 'disembarking' | 'draining' | 'settled' | 'done'
-export const TIDE_SESSION_KEY = 'bitty-technologies-tide-seen-v3'
-export const TIDE_ARRIVED_KEY = 'bitty-technologies-arrived-v3'
+gsap.registerPlugin(useGSAP)
+export const TIDE_ARRIVED_KEY = 'bitty-technologies-arrived-v6'
 export const TIDE_ARRIVED_EVENT = 'bitty-tide-arrived'
-const assets = ['/assets/bitty-cyan-foam-water.png', '/assets/bitty-whale-wave.png', '/assets/bitty-whale-ride.png']
+export const TIDE_STARTED_EVENT = 'bitty-tide-started'
+const assets = ['bitty-swept-left.png', 'bitty-tap-oops.png',
+  'bitty-cobalt-sea.png', 'bitty-whale-wave.png', 'bitty-stand.png']
 
 export function useTechnologyTide() {
   const sectionRef = useRef<HTMLElement>(null)
-  const sceneRef = useRef<HTMLDivElement>(null)
+  const startRef = useRef<() => void>(() => {})
+  const finishRef = useRef<() => void>(() => {})
   const [phase, setPhase] = useState<TidePhase>('idle')
+  const [hasPlayed, setHasPlayed] = useState(false)
+  const [ready, setReady] = useState(false)
+  const [assetError, setAssetError] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 
-  useEffect(() => {
+  useGSAP((_context, contextSafe) => {
     const section = sectionRef.current
-    const scene = sceneRef.current
-    if (!section || !scene) return
+    if (!section) return
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
-    let disposed = false
-    let started = false
-    let assetsReady = false
-    let sectionVisible = false
-    let tideVisible = false
-    const timers: number[] = []
-    let observer: IntersectionObserver | null = null
-    const clear = () => { timers.forEach(window.clearTimeout); timers.length = 0 }
-    const finish = () => { clear(); observer?.disconnect(); if (!disposed) setPhase('done') }
-
-    const start = () => {
-      if (disposed || started || !assetsReady || !sectionVisible || !tideVisible || media.matches) return
-      started = true
-      sessionStorage.setItem(TIDE_SESSION_KEY, 'true')
-      observer?.disconnect()
-      const bounds = section.getBoundingClientRect()
-      const water = scene.getBoundingClientRect()
-      const grid = section.querySelector<HTMLElement>('.technology-grid')?.getBoundingClientRect()
-      // Raise the crest to the category headings, not just the bottom third.
-      if (grid) scene.style.height = `${bounds.bottom - grid.top + 100}px`
-      const whaleWidth = parseFloat(getComputedStyle(scene).getPropertyValue('--whale-width'))
-      // Stop inside the right edge instead of disappearing off-screen.
-      section.style.setProperty('--whale-travel', `${bounds.width - 20}px`)
-      section.style.setProperty('--whale-left-stop', `${whaleWidth + 20}px`)
-      // Compute each whole word's delay from its horizontal position, not DOM order.
-      section.querySelectorAll<HTMLElement>('.technology-name').forEach((word, index) => {
-        const rect = word.getBoundingClientRect()
-        if (rect.bottom < (grid?.top ?? water.top) - 90) return
-        const progress = (rect.left + rect.width / 2 - bounds.left + whaleWidth / 2) / (bounds.width + whaleWidth)
-        word.dataset.tideReact = 'true'
-        word.style.setProperty('--tide-delay', `${Math.max(0, Math.min(1, progress)) * 2500}ms`)
-        word.style.setProperty('--tide-lift-delay', `${(index % 3) * 70}ms`)
-        word.style.setProperty('--tide-rise', `${word.textContent === 'Docker' ? -12 : -8 - (index % 3) * 2}px`)
-        word.style.setProperty('--tide-tilt', `${word.textContent === 'Docker' ? 3 : (index % 2 ? -2 : 2)}deg`)
-        word.style.setProperty('--tide-drift', `${4 + (index % 3) * 2}px`)
-        word.style.setProperty('--tide-rest-tilt', `${index % 2 ? -1.5 : 2}deg`)
-      })
-      setPhase('rising')
-      ;([[1400, 'floating'], [2300, 'crossing'], [4700, 'waving'], [5100, 'returning'], [7500, 'disembarking'], [8300, 'draining'], [9700, 'settled']] as const).forEach(([delay, next]) => {
-        timers.push(window.setTimeout(() => {
-          setPhase(next)
-          if (next === 'draining') {
-            sessionStorage.setItem(TIDE_ARRIVED_KEY, 'true')
-            window.dispatchEvent(new Event(TIDE_ARRIVED_EVENT))
-          }
-        }, delay))
-      })
+    let active = true, playing = false, loaded = false
+    let timeline: gsap.core.Timeline | undefined
+    const images: HTMLImageElement[] = []
+    const position = () => {
+      const { surfaceShift } = floodGeometry(section)
+      gsap.set(section.querySelectorAll('.tide-actor'), { y: surfaceShift })
     }
-
-    const preference = () => {
-      if (media.matches) { started = true; finish() }
-    }
-    // Don't leave a half-played scene when the page is backgrounded or resized.
-    const interrupt = () => { if (started) finish() }
-    const visibility = () => { if (document.hidden) interrupt() }
-    media.addEventListener('change', preference)
-    window.addEventListener('resize', interrupt)
-    document.addEventListener('visibilitychange', visibility)
-
-    if (media.matches || sessionStorage.getItem(TIDE_SESSION_KEY) === 'true' || typeof IntersectionObserver !== 'function') {
-      setPhase('done')
-      return () => {
-        disposed = true
-        media.removeEventListener('change', preference)
-        window.removeEventListener('resize', interrupt)
-        document.removeEventListener('visibilitychange', visibility)
+    position()
+    const restoreFocus = () => {
+      if (document.activeElement?.classList.contains('technology-skip')) {
+        section.querySelector<HTMLButtonElement>('.technology-start')?.focus({ preventScroll: true })
       }
     }
-
-    observer = new IntersectionObserver(entries => {
-      for (const entry of entries) {
-        if (entry.target === section) sectionVisible = entry.isIntersecting && entry.intersectionRatio >= .35
-        if (entry.target === scene) tideVisible = entry.isIntersecting && entry.intersectionRatio >= .15
-      }
-      start()
-    }, { threshold: [0, .15, .35] })
-    // On tall mobile layouts, wait until the lower animation lane is also visible.
-    observer.observe(section)
-    observer.observe(scene)
-    const images = assets.map(src => {
-      const image = new Image()
-      image.src = src
-      return image
+    const finish = () => {
+      if (!active || !playing) return
+      playing = false
+      timeline?.progress(1, true).pause()
+      restoreFocus()
+      setPhase('settled')
+    }
+    finishRef.current = finish
+    startRef.current = contextSafe!(() => {
+      if (!active || playing || !loaded) return
+      setHasPlayed(true)
+      sessionStorage.removeItem(TIDE_ARRIVED_KEY)
+      window.dispatchEvent(new Event(TIDE_STARTED_EVENT))
+      if (media.matches) { setPhase('settled'); return }
+      playing = true
+      // Fresh measurements for every user-triggered run, including after resize.
+      timeline?.kill()
+      timeline = createTechnologyFlood(section, next => {
+        if (!active) return
+        if (next === 'settled') { playing = false; restoreFocus() }
+        setPhase(next)
+      })
+      setPhase('notice')
+      timeline.play(0)
     })
-    Promise.all(images.map(image => new Promise<boolean>(resolve => {
-      if (image.complete) { resolve(image.naturalWidth > 0); return }
-      image.onload = () => resolve(true)
-      image.onerror = () => resolve(false)
-    }))).then(loaded => {
-      if (disposed) return
-      if (!loaded.every(Boolean)) { finish(); return }
-      assetsReady = true
-      start()
+    const preference = () => { setReducedMotion(media.matches); if (media.matches) finish() }
+    const resize = contextSafe!(() => { finish(); position() })
+    const visibility = () => { if (document.hidden) finish() }
+    const leaveSection = () => {
+      if (!playing) return
+      const rect = section.getBoundingClientRect()
+      if (rect.bottom <= 0 || rect.top >= window.innerHeight) finish()
+    }
+    media.addEventListener('change', preference)
+    window.addEventListener('resize', resize)
+    document.addEventListener('visibilitychange', visibility)
+    window.addEventListener('scroll', leaveSection, { passive: true })
+    Promise.all(assets.map(file => new Promise<boolean>(resolve => {
+      const image = new Image(); images.push(image)
+      image.onload = () => resolve(true); image.onerror = () => resolve(false)
+      image.src = `/assets/${file}`
+      if (image.complete) resolve(image.naturalWidth > 0)
+    }))).then(results => {
+      if (!active) return
+      loaded = results.every(Boolean)
+      setReady(loaded); setAssetError(!loaded)
     })
     return () => {
-      disposed = true
-      clear()
-      observer?.disconnect()
+      active = false
+      startRef.current = () => {}; finishRef.current = () => {}
+      timeline?.kill()
       images.forEach(image => { image.onload = null; image.onerror = null })
       media.removeEventListener('change', preference)
-      window.removeEventListener('resize', interrupt)
+      window.removeEventListener('resize', resize)
       document.removeEventListener('visibilitychange', visibility)
+      window.removeEventListener('scroll', leaveSection)
     }
-  }, [])
-
-  return { sectionRef, sceneRef, phase }
+  }, { scope: sectionRef })
+  const playing = !['idle', 'done', 'settled'].includes(phase)
+  return { sectionRef, phase, playing, hasPlayed, ready, assetError, reducedMotion,
+    start: () => startRef.current(), skip: () => finishRef.current() }
 }

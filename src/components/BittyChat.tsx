@@ -4,7 +4,7 @@ import { askBitty } from '../api/bitty'
 import type { BittyReply } from '../types'
 import { guideCopy, useBittyGuide } from './BittyGuide'
 import { getProject } from '../content/projects'
-import { TIDE_ARRIVED_EVENT, TIDE_ARRIVED_KEY } from './useTechnologyTide'
+import { TIDE_ARRIVED_EVENT, TIDE_ARRIVED_KEY, TIDE_STARTED_EVENT } from './useTechnologyTide'
 
 export function BittyChat() {
   const [localOpen, setLocalOpen] = useState(false)
@@ -31,6 +31,7 @@ export function BittyChat() {
   const assistantY = useMotionValue(0)
   const tipKey = guide?.guided ? stop : 'intro'
   const showTip = !dismissedTips.includes(tipKey)
+  const skyCompact = ['seeds', 'hostiqr', 'fintrack'].includes(stop) && !open && !guide?.guided
 
   useEffect(() => {
     const arrive = () => {
@@ -38,7 +39,12 @@ export function BittyChat() {
       setReaction('He aparcado la ballena. Ahora seguimos a pie.')
     }
     window.addEventListener(TIDE_ARRIVED_EVENT, arrive)
-    return () => window.removeEventListener(TIDE_ARRIVED_EVENT, arrive)
+    const board = () => setTideArrived(false)
+    window.addEventListener(TIDE_STARTED_EVENT, board)
+    return () => {
+      window.removeEventListener(TIDE_ARRIVED_EVENT, arrive)
+      window.removeEventListener(TIDE_STARTED_EVENT, board)
+    }
   }, [])
 
   useEffect(() => {
@@ -95,7 +101,7 @@ export function BittyChat() {
 
   return (
     <><div ref={boundsRef} className="clippy-bounds" aria-hidden="true" />
-    <motion.aside ref={shellRef} className={`bitty-chat clippy-assistant${(stop === 'inicio' || (stop === 'tecnologias' && !tideArrived)) && !open ? ' hero-companion-docked' : ''}${tideArrived && stop === 'tecnologias' && !open ? ' tide-companion-arrived' : ''}${open ? ' is-open' : ''}${guide?.hidden ? ' guide-hidden' : ''}`} aria-label="Guía y preguntas de Bitty" drag dragListener={false} dragControls={dragControls} dragConstraints={boundsRef} dragElastic={0} dragMomentum={false} onDragStart={() => setReaction('¡Mis pies no tienen ruedas!')} onDragEnd={() => setReaction('Nueva oficina. Mismo sueldo: cero.')} style={{ x: assistantX, y: assistantY }}>
+    <motion.aside ref={shellRef} className={`bitty-chat clippy-assistant${(stop === 'inicio' || (stop === 'tecnologias' && !tideArrived)) && !open ? ' hero-companion-docked' : ''}${tideArrived && stop === 'tecnologias' && !open ? ' tide-companion-arrived' : ''}${open ? ' is-open' : ''}${skyCompact ? ' sky-guide-compact' : ''}${guide?.hidden ? ' guide-hidden' : ''}`} aria-label="Guía y preguntas de Bitty" drag dragListener={false} dragControls={dragControls} dragConstraints={boundsRef} dragElastic={0} dragMomentum={false} onDragStart={() => setReaction('¡Mis pies no tienen ruedas!')} onDragEnd={() => setReaction('Nueva oficina. Mismo sueldo: cero.')} style={{ x: assistantX, y: assistantY }}>
       {guide?.hidden ? <button className="restore-bitty" type="button" onClick={() => guide.setHidden(false)}>Mostrar a Bitty</button> : <>
       {showTip && !open && <motion.div key={tipKey} className="guide-teaser clippy-balloon" initial={{ opacity: 0, y: reduced ? 0 : 8 }} animate={{ opacity: 1, y: 0 }}>
         <button className="dismiss-tip" type="button" aria-label="Descartar sugerencia de Bitty" onClick={() => setDismissedTips((tips) => [...tips, tipKey])}>×</button>

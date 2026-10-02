@@ -1,43 +1,83 @@
-# Marea de tecnologías
+# Mi stack: playa y ola opcional
 
-La sección mantiene las 13 tecnologías originales de `src/content/technologies.ts`. Docker no se ha añadido como habilidad: la ballena es un recurso decorativo. Si José confirma Docker y lo añade al contenido, su reacción está preparada (12 px / 3 grados).
+## Versión actual: playa (1 de octubre de 2026)
 
-El diseño usa el mockup del stack como referencia, no como fondo: título grande con subrayado coral, categorías sin iconos ni bordes y nombres monoespaciados en tres columnas (dos en tablet y una en móvil). Los puntos cian indican experiencia confirmada; la explicación permanece visible y las etiquetas de cada tecnología siguen disponibles para lectores de pantalla. Se conservan los grupos de datos e IA, aunque no aparezcan en el mockup, para no perder contenido existente.
+Se usa `public/assets/stack-beach-sand.png`, copia sin editar de la imagen de arena suministrada. La llave, el chorro y sus poses de apertura/cierre ya no se montan ni se precargan. Sus archivos se conservan para poder recuperar el diseño anterior.
 
-## Código y secuencia
+La sección muestra únicamente título, controles y nombres agrupados. Se quitaron la leyenda de experiencia, el mensaje visible de Bitty y «Docker · guiño de la escena». Los usos verificables siguen asociados a los nombres con `aria-describedby`; las reacciones se anuncian en un estado solo para lectores de pantalla. Docker no se añade como habilidad. Menos padding superior/inferior y menor separación entre categorías eliminan el escenario vacío anterior.
 
-- `src/components/Technologies.tsx`: sección semántica y capa decorativa `aria-hidden`, sin duplicar el texto.
-- `src/components/useTechnologyTide.ts`: observa la sección y el carril inferior. Arranca cuando hay al menos un 35% de la sección y un 15% del carril visibles, tras precargar los tres PNG. Esto evita reproducir la escena fuera de pantalla en móviles con una sección larga.
-- `src/components/Technologies.css`: agua hasta encima de las categorías, ida y vuelta horizontal, flotación vertical y reacción de palabras completas. La altura absoluta se calcula una vez al iniciar, sin cambiar el layout. Decoración detrás del contenido y `pointer-events: none`.
-- `src/components/BittyGuide.tsx` y `BittyChat.tsx`: reconocen esta sección y recogen el asistente durante el viaje. El evento local `bitty-tide-arrived` lo revela al desembarcar; continúa fijo al viewport durante el scroll. En esta sección no muestra el globo grande para no tapar las tecnologías. No se crea una segunda mascota ni se llama a la IA.
+La ola se activa con «Ver la ola», no automáticamente al entrar. Una timeline GSAP de 7 segundos coordina `notice` (0), `fill` (0.65), `sweptAway` (2.05), `whaleReturn` (3.25), `landing` (5.1) y `drain` (5.9). Se mantienen las dos capas del mar, el movimiento de palabras completas, el viaje en ballena y el regreso a la pose normal. La geometría se calcula desde la cuadrícula, sin referencias a una llave.
 
-Fases: `idle` → `rising` (0 ms) → `floating` (1400 ms) → `crossing` (2300 ms) → `waving` (4700 ms) → `returning` (5100 ms) → `disembarking` (7500 ms) → `draining` (8300 ms) → `settled` (9700 ms). `done` es la alternativa estática para sesiones ya vistas, interrupciones y movimiento reducido.
+«Saltar» completa todos los movimientos y devuelve el foco al control persistente «Repetir». Los cambios de pose siguen funcionando con ratón, teclado y toque. Al salir, ocultar la pestaña, redimensionar o activar movimiento reducido, se completa la escena; `useGSAP` limpia todo al desmontar. Con movimiento reducido se presenta directamente el desenlace. No hay ScrollTrigger ni observador de entrada en esta sección: solo el cielo de proyectos depende del scroll.
 
-Primero sube el agua durante 1400 ms. Después empiezan a flotar los nombres completos entre 8 y 12 px, con balanceo suave y pequeños retrasos. Tras una pausa de 900 ms aparece la ballena desde la derecha, cruza hacia la izquierda, gira y vuelve a la derecha. Cada recorrido dura 2400 ms, con una pausa de 400 ms entre ambos. El sprite se refleja según la dirección. Al desembarcar, la ballena se desvanece hacia abajo y el Bitty del asistente aparece con una pequeña caída en la esquina inferior derecha. Al bajar el agua en 1400 ms, los nombres quedan desplazados 4–8 px y torcidos entre −1.5 y 2 grados. En móvil las amplitudes se reducen. Los elementos de lista no cambian de dimensiones ni de orden. El movimiento usa `transform` y `opacity`, sin dependencias nuevas.
+Verificación: pruebas de todas las fases y limpieza, activación manual, repetición, foco, falta de assets y movimiento reducido. Navegador en 1440/768/390/320 px, sin desbordamiento horizontal ni saltos de layout al activar la ola.
 
-`sessionStorage['bitty-technologies-tide-seen-v3']` registra el inicio y evita repetición al volver o recargar. `bitty-technologies-arrived-v3` conserva el desembarco del asistente. La versión nueva permite ver esta secuencia aunque ya se hubiera reproducido la anterior. Para revisar de nuevo en desarrollo:
+---
 
-```js
-sessionStorage.removeItem('bitty-technologies-tide-seen-v3')
-sessionStorage.removeItem('bitty-technologies-arrived-v3')
-location.reload()
-```
+## Archivo de la versión anterior: llave (ya no activa)
 
-Desmontar limpia timers, observer, handlers de precarga y listeners. Movimiento reducido, error al cargar un recurso o falta de IntersectionObserver dejan el contenido estático. Un cambio a movimiento reducido, cambio de tamaño o pestaña oculta completa una escena iniciada sin dejarla a medias.
+El contenido sigue siendo HTML real y legible antes de cualquier interacción. Hay 15 tecnologías verificables en `src/content/technologies.ts`, organizadas en las cinco categorías existentes; GSAP y GitHub están presentes en el proyecto. El repositorio de GitHub se confirmó con el remoto de Git. Docker aparece separado como **guiño de la escena**, no como habilidad confirmada. No se añaden motores de bases de datos ni experiencia no documentada.
 
-## Assets
+## Archivos y responsabilidades
 
-- `public/assets/bitty-whale-wave.png`: sprite adjunto «Bitty waves atop a blue whale», orientado hacia la derecha.
-- `public/assets/bitty-whale-ride.png`: sprite adjunto «Bitty rides the container whale», reflejado hacia la derecha con la propiedad independiente `scale`, que no es sobrescrita por los keyframes de `transform`. Al aparcar se cambia suavemente a la pose de saludo.
-- `public/assets/bitty-cyan-foam-water.png`: agua adjunta «Pixel water overlay with cyan foam», transparencia conservada. Es el agua activa de esta versión.
-- `public/assets/bitty-pixel-water.png`: agua anterior generada con el tool integrado ImageGen, conservada como recurso histórico; ya no se utiliza en la escena.
+- `src/content/technologies.ts`: nombres, contexto (experiencia o herramienta del portafolio), frases específicas sobre su uso y mapa de sprites existentes.
+- `src/components/Technologies.tsx`: botones semánticos para explorar, descripción accesible por tecnología, enlace independiente al repositorio, estado de tecnología activa, capas de poses, llave y controles «Saltar»/«Repetir».
+- `src/components/Technologies.css`: diseño editorial navy/crema/cian/coral, margen lateral reservado para Bitty, fundido breve de poses, pop de la llave y variantes móviles/reducidas.
+- `src/components/useTechnologyTide.ts`: precarga, descubrimiento de la llave con ScrollTrigger, acciones explícitas de inicio/salto, preferencia de movimiento y limpieza dentro de useGSAP.
+- `src/animations/technologyFlood.ts`: geometría y timeline de 7 segundos. `FLOOD_LABELS` define los momentos narrativos en segundos y `FLOOD_DURATION` documenta la duración comprobada por las pruebas.
+- `src/components/Technologies.test.tsx`: pruebas de contenido, exploración, flujo opcional, timeline, salto, foco, repetición, Strict Mode y casos alternativos.
 
-No falta ningún asset para ejecutar esta versión. Para un desembarco articulado en vez de la transición actual, convendría crear una ballena sin Bitty y un sprite de Bitty saltando de ella.
+GSAP y @gsap/react ya están instalados. Motion se conserva para las demás escenas. No se introduce Three.js ni otra dependencia.
 
-Prompt histórico del agua anterior (no se ha generado una imagen nueva en esta actualización):
+## Flujo normal
 
-> Use case: stylized-concept. Asset type: standalone transparent pixel-art water strip for a React portfolio animation, not a web mockup. Create only a wide horizontal ocean band: chunky crisp 8-bit stepped wave crests with pale cyan highlights, deep cobalt and navy water below, sparse rectangular blue reflections. Water fills the bottom 55% of the canvas down to the bottom edge; the top 45% above the irregular crests is genuinely transparent. Wide landscape composition, horizontally repeatable edges, modest shallow waves, restrained contrast suitable behind warm white web text on #080e20. No Bitty, no whale, no boats, no characters, no logos, absolutely no text, no UI, no scene or sky, no floating objects. Sharp pixel grid, no gradients or soft glow. This asset is an independent lightweight water layer inspired by the supplied pixel tide mockup, not a screenshot.
+ScrollTrigger calcula la entrada de la **llave**, no solo la de la sección: al alcanzar el 85% del viewport se revela con un pop amortiguado de 600 ms. Usa la cuadrícula sin transformar como referencia y compensa la distancia de la llave; observar el sprite transformado directamente podría medir su posición original al fondo de la escena. La marca de sesión `bitty-stack-tap-discovered-v1` evita repetir ese pop automáticamente al navegar. Entrar, volver o recargar **nunca inicia la inundación**.
+
+La imagen de la llave es un botón: sin texto visible «Abrir llave», pero con nombre accesible «Activar la inundación» y contorno de foco. Se puede activar con clic, toque, Enter o espacio.
+
+Hover, foco y toque seleccionan una tecnología. Las poses existentes se superponen con un fundido de 200 ms y un desplazamiento de solo 3 px. Bitty se muestra en el margen reservado a la altura de la palabra seleccionada, no encima del texto; al salir o pulsar Escape recupera su aspecto normal. La lista muestra solo los nombres, sin descripciones ni notas debajo. Las frases de uso se conservan como descripción accesible y en la reacción de Bitty. El enlace de GitHub es independiente para que consultar la reacción no fuerce la navegación.
+
+El estado `activeTechnology` es independiente de `phase`. Al comenzar la escena se limpia la selección y se ignoran temporalmente nuevos cambios de pose, sin desactivar la información ni los enlaces.
+
+## Timeline al pulsar la imagen
+
+| Etiqueta | Tiempo | Acción |
+| --- | --- | --- |
+| `openTap` | 0 s | Bitty se prepara, hace fuerza y suelta la rueda con un pequeño retroceso. |
+| `fill` | 0.85 s | Se despliega el chorro y sube el agua detrás del contenido. |
+| `sweptAway` | 2.05 s | Tras intentar resistir y decir «Yo controlo—», la corriente acelera hacia la izquierda. |
+| `whaleReturn` | 3.25 s | Crucero continuo, balanceo suave y estela; la ballena frena solo al llegar. |
+| `closeTap` | 5.1 s | Fundido de la ballena y pequeño salto de Bitty hacia la llave antes de cerrarla. |
+| `drain` | 5.9 s | El mar desciende y las palabras se asientan de forma escalonada. |
+| final | 7 s | Bitty normal y «Docker lo tenía bajo control. Más o menos.»; vuelve la exploración. |
+
+La superficie usa el mismo PNG en dos capas independientes que se desplazan lentamente en sentidos opuestos. Un degradado funde la cresta con el cuerpo del agua sin borde horizontal duro. Tres pequeñas gotas acompañan la estela. Todo pertenece a la misma timeline finita: ni CSS infinito ni animación de `background-position`. Las palabras inferiores flotan primero, y la estela reacciona según la posición horizontal real de cada palabra. `will-change` solo se aplica mientras la escena está activa.
+
+Se animan bloques completos, nunca letras individuales: hasta 12 px y 3 grados, con reacciones escalonadas. Los 20 bloques animados (nombres y títulos de categoría) terminan con x/y/rotación cero. No hay cambios de orden ni dimensiones animadas, pinning o scrubbing.
+
+Se conserva el nivel alto solicitado: la cresta alcanza 36 px por encima de la cuadrícula y permanece detrás del texto. La llave mide 186 × 124 px en escritorio y 136 × 91 px en móvil. Su salida está a la izquierda (18% del ancho, 91% de la altura); el largo del chorro se calcula desde allí hasta el borde inferior de la sección. La capa del sprite mide 320 px de ancho, 240 px en móvil, para compensar sus márgenes transparentes. Un contenedor recorta el pequeño margen vertical sin editar la imagen.
+
+## Saltar, repetir y accesibilidad
+
+«Saltar» lleva la timeline a su final, detiene el agua, restaura las palabras y devuelve el foco a la llave si estaba en el botón que desaparece. Al terminar aparece «Repetir», que crea una timeline nueva con medidas actualizadas y mata la anterior. Un guard síncrono evita activaciones duplicadas antes de que React vuelva a renderizar.
+
+Scroll, enlaces y teclado siguen funcionando. Las capas gráficas no capturan el puntero; solo lo hace el botón de la llave. Los sprites, agua, chorro, estela y frases decorativas tienen `aria-hidden` o alt vacío. Las descripciones están asociadas a los controles y el mensaje principal es un estado accesible.
+
+Salir de la sección, ocultar la pestaña, redimensionar o activar movimiento reducido completa una escena en curso. Con `prefers-reduced-motion` no hay pop, fundidos, agua ni desplazamientos largos: pulsar la llave muestra directamente el desenlace. Los controles y las reacciones estáticas siguen disponibles. Si falla un recurso de la inundación, la llave queda desactivada con explicación; el contenido y la exploración permanecen disponibles.
+
+`useGSAP` limita los efectos al componente y revierte sus estilos al desmontar. Se limpian timeline, ScrollTrigger, listeners de scroll/resize/visibility/media y handlers de imágenes. El flag `active` descarta precargas del primer montaje de Strict Mode. No hay timers ni animaciones infinitas. El asistente global se mantiene recogido en esta sección, sin duplicar a Bitty.
+
+## Recursos
+
+Se integraron los PNG proporcionados sin alterar sus píxeles:
+
+- `public/assets/bitty-tap-left.png`: llave orientada a la izquierda.
+- `public/assets/bitty-swept-left.png`: Bitty arrastrado por el agua hacia la izquierda.
+
+Se reutilizan `bitty-tap-turn.png`, `bitty-tap-oops.png`, `bitty-tap-stream.png`, `bitty-cobalt-sea.png`, `bitty-whale-wave.png`, `bitty-stand.png`, `bitty-nav-wink.png` y `bitty-nav-github-kiss.png`. Este último es la variante con orejas y cola de gato. Para el resto se usan poses compatibles, no atuendos inventados.
+
+**No falta ningún recurso obligatorio.** Como mejora opcional: añadir `public/assets/bitty-tap-left-open.png`, exportado sobre el mismo canvas que la llave izquierda, para distinguir también el estado abierto en el dibujo. Actualmente las dos capas usan la misma llave con una variación de brillo; el movimiento y el chorro indican la apertura. Una ballena sola (`bitty-whale-only.png`) y una pose de bajada (`bitty-whale-disembark.png`) permitirían reemplazar el fundido del regreso por un descenso dibujado.
 
 ## Verificación
 
-Pruebas de contenido, fases, entrega al asistente, umbral de visibilidad, reproducción única, movimiento reducido, desmontaje y fallo de assets en `Technologies.test.tsx`. QA de navegador en 1440, 768, 390 y 320 px: dos recorridos, nombres flotantes y estado final torcido, asistente fijo, contenido accesible, sin overflow ni cambios en la geometría de listas y sin repetición al volver o recargar.
+Pruebas automatizadas y build con los scripts existentes. Recorridos de navegador en 1440/768/390/320 px: entrada sin activación, hover/toque/foco, enlace real de GitHub, inicio con Enter, salto y foco, repetición completa, recorrido de ballena hacia la derecha, salida de la sección, restauración del texto y ausencia de overflow o saltos de geometría. También movimiento reducido. El sitio no se publica.

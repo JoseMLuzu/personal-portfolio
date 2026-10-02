@@ -1,135 +1,184 @@
-import { act, render, screen, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { StrictMode } from 'react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import gsap from 'gsap'
+import * as flood from '../animations/technologyFlood'
 import { Technologies } from './Technologies'
-import { TIDE_ARRIVED_EVENT, TIDE_ARRIVED_KEY, TIDE_SESSION_KEY } from './useTechnologyTide'
 
-let observerCallback: IntersectionObserverCallback
-let observer: { observe: ReturnType<typeof vi.fn>; disconnect: ReturnType<typeof vi.fn> }
 let media: { matches: boolean; addEventListener: ReturnType<typeof vi.fn>; removeEventListener: ReturnType<typeof vi.fn> }
 let assetWorks = true
 beforeEach(() => {
-  sessionStorage.clear()
-  assetWorks = true
-  vi.useFakeTimers()
+  sessionStorage.clear(); assetWorks = true
   media = { matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() }
   vi.stubGlobal('matchMedia', () => media)
-  vi.stubGlobal('Image', class {
-    src = ''; complete = true; naturalWidth = assetWorks ? 100 : 0
-    onload = null; onerror = null
-  })
-  vi.stubGlobal('IntersectionObserver', class {
-    observe = vi.fn(); disconnect = vi.fn()
-    constructor(callback: IntersectionObserverCallback) { observerCallback = callback; observer = this }
-  })
+  vi.stubGlobal('Image', class { src = ''; complete = true; naturalWidth = assetWorks ? 100 : 0; onload = null; onerror = null })
+  vi.spyOn(flood, 'createTechnologyFlood')
 })
-afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals() })
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals() })
+async function ready() { await act(async () => { await Promise.resolve() }) }
+function timeline() { return vi.mocked(flood.createTechnologyFlood).mock.results.at(-1)!.value as ReturnType<typeof flood.createTechnologyFlood> }
+function start() { fireEvent.click(document.querySelector('.technology-start')!) }
+function pose() { return document.querySelector('.tide-idle-poses')?.getAttribute('data-pose') }
 
-async function intersect(container: HTMLElement, ratio = .5, lane = true) {
-  const section = container.querySelector<HTMLElement>('.technologies')!
-  const scene = container.querySelector<HTMLElement>('.technology-tide')!
-  section.getBoundingClientRect = () => ({ left: 0, width: 1200, bottom: 900 } as DOMRect)
-  scene.getBoundingClientRect = () => ({ top: 600 } as DOMRect)
-  scene.style.setProperty('--whale-width', '240px')
-  container.querySelectorAll<HTMLElement>('.technology-name').forEach((word, index) => {
-    word.getBoundingClientRect = () => ({ left: index * 70, width: 80, bottom: 750 } as DOMRect)
-  })
-  await act(async () => {
-    observerCallback([
-      { target: section, isIntersecting: ratio > 0, intersectionRatio: ratio },
-      { target: scene, isIntersecting: lane, intersectionRatio: lane ? .5 : 0 },
-    ] as unknown as IntersectionObserverEntry[], observer as unknown as IntersectionObserver)
-    await Promise.resolve()
-  })
-  return section
-}
-
-describe('technology content', () => {
-  it('groups technologies and distinguishes experience from the portfolio stack', () => {
-    render(<Technologies />)
+describe('optional stack flood', () => {
+  it('shows only skill names while keeping accessible descriptions and Bitty reactions', async () => {
+    render(<Technologies />); await ready()
     const section = screen.getByRole('region', { name: /con qué construyo/i })
-    expect(section).toHaveAttribute('id', 'tecnologias')
     expect(within(section).getAllByRole('article')).toHaveLength(5)
-    const languages = within(screen.getByRole('article', { name: 'Lenguajes' }))
-    expect(languages.getByText('Python').closest('li')).toHaveTextContent('Experiencia')
-    expect(languages.getByText('TypeScript').closest('li')).toHaveTextContent('Este portafolio')
-    expect(screen.getByText('Motores y proyectos por documentar.')).toBeVisible()
-    expect(screen.queryByText(/PostgreSQL|MySQL|MongoDB/)).not.toBeInTheDocument()
-    expect(within(section).getAllByRole('listitem')).toHaveLength(13)
-    expect(section.querySelector('.technology-tide')).toHaveAttribute('aria-hidden', 'true')
+    expect(within(section).getAllByRole('listitem')).toHaveLength(15)
+    expect(section.querySelectorAll('.technology-grid p')).toHaveLength(0)
+    expect(screen.getByRole('button', { name: 'Python' })).toHaveAccessibleDescription('El backend de Bitty está escrito en Python.')
+    expect(screen.getByRole('button', { name: 'Python' }).closest('li')).toHaveTextContent('Experiencia')
+    expect(screen.getByRole('button', { name: 'GSAP' }).closest('li')).toHaveTextContent('Este portafolio')
+    expect(screen.queryByRole('button', { name: 'Docker' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /Docker · guiño/ })).not.toBeInTheDocument()
+    expect(section.querySelector('.technology-feedback')).not.toBeInTheDocument()
+    expect(screen.queryByText(/Experiencia en React, Python y bases de datos/)).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Ver repositorio/ })).toHaveAttribute('href', 'https://github.com/JoseMLuzu/personal-portfolio')
     expect(within(section).queryByRole('img')).not.toBeInTheDocument()
+    expect(pose()).toBe('normal')
   })
-
-  it('raises words before crossing, parks Bitty and leaves drifted words after draining once', async () => {
-    const { container, unmount } = render(<StrictMode><Technologies /></StrictMode>)
-    const section = await intersect(container, .1)
-    expect(section).toHaveAttribute('data-tide-phase', 'idle')
-    await intersect(container, .5, false)
-    expect(section).toHaveAttribute('data-tide-phase', 'idle')
-    await intersect(container)
-    expect(section).toHaveAttribute('data-tide-phase', 'rising')
-    expect(sessionStorage.getItem(TIDE_SESSION_KEY)).toBe('true')
-    const words = Array.from(container.querySelectorAll<HTMLElement>('.technology-name'))
-    const arrived = vi.fn()
-    window.addEventListener(TIDE_ARRIVED_EVENT, arrived)
-    expect(words[0].style.getPropertyValue('--tide-delay')).not.toBe(words[3].style.getPropertyValue('--tide-delay'))
-    expect(words[0].textContent).toBe('Python')
-    expect(section.style.getPropertyValue('--whale-travel')).toBe('1180px')
-    expect(words[0].style.getPropertyValue('--tide-drift')).toBe('4px')
-    expect(words[0].style.getPropertyValue('--tide-rest-tilt')).toBe('2deg')
-    act(() => vi.advanceTimersByTime(1400))
-    expect(section).toHaveAttribute('data-tide-phase', 'floating')
-    act(() => vi.advanceTimersByTime(900))
-    expect(section).toHaveAttribute('data-tide-phase', 'crossing')
-    act(() => vi.advanceTimersByTime(2400))
-    expect(section).toHaveAttribute('data-tide-phase', 'waving')
-    act(() => vi.advanceTimersByTime(400))
-    expect(section).toHaveAttribute('data-tide-phase', 'returning')
-    act(() => vi.advanceTimersByTime(2400))
-    expect(section).toHaveAttribute('data-tide-phase', 'disembarking')
-    act(() => vi.advanceTimersByTime(800))
-    expect(section).toHaveAttribute('data-tide-phase', 'draining')
-    expect(arrived).toHaveBeenCalledOnce()
-    expect(sessionStorage.getItem(TIDE_ARRIVED_KEY)).toBe('true')
-    window.removeEventListener(TIDE_ARRIVED_EVENT, arrived)
-    act(() => vi.advanceTimersByTime(1400))
-    expect(section).toHaveAttribute('data-tide-phase', 'settled')
-    await intersect(container)
-    expect(section).toHaveAttribute('data-tide-phase', 'settled')
-    unmount()
-    const again = render(<Technologies />)
-    expect(again.container.querySelector('.technologies')).toHaveAttribute('data-tide-phase', 'done')
+  it('keeps the beach static in Strict Mode until the wave is requested', async () => {
+    const view = render(<StrictMode><Technologies /></StrictMode>); await ready()
+    fireEvent.scroll(window)
+    expect(view.container.querySelector('.tide-tap')).not.toBeInTheDocument()
+    expect(view.container.querySelector('.tide-stream')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Ver la ola/ })).toBeEnabled()
+    expect(flood.createTechnologyFlood).not.toHaveBeenCalled()
+    expect(view.container.querySelector('section')).toHaveAttribute('data-tide-phase', 'idle')
+    start(); expect(flood.createTechnologyFlood).toHaveBeenCalledOnce()
+    view.unmount(); expect(media.removeEventListener).toHaveBeenCalled()
   })
-
-  it('shows a static section with reduced motion and finishes on preference change', async () => {
+  it('changes available poses with pointer, touch clicks and keyboard focus', async () => {
+    const user = userEvent.setup()
+    render(<Technologies />); await ready()
+    fireEvent.pointerOver(screen.getByRole('button', { name: 'React' }))
+    expect(pose()).toBe('wink')
+    expect(screen.getByRole('status')).toHaveTextContent('Separa el hero')
+    fireEvent.pointerOut(screen.getByRole('button', { name: 'React' }))
+    expect(pose()).toBe('normal')
+    await user.click(screen.getByRole('button', { name: 'GitHub' }))
+    expect(pose()).toBe('cat')
+    act(() => screen.getByRole('button', { name: 'GSAP' }).focus())
+    expect(pose()).toBe('whale')
+    await user.keyboard('{Escape}')
+    expect(pose()).toBe('normal')
+    await user.click(screen.getByRole('button', { name: 'GSAP' }))
+    expect(pose()).toBe('whale')
+    expect(flood.createTechnologyFlood).not.toHaveBeenCalled()
+  })
+  it('runs a seven-second labelled story only on activation and pauses hovers', async () => {
+    const view = render(<Technologies />); await ready(); start()
+    expect(timeline().labels).toEqual(flood.FLOOD_LABELS)
+    expect(timeline().duration()).toBeCloseTo(flood.FLOOD_DURATION)
+    expect(screen.getByRole('button', { name: 'Saltar' })).toBeEnabled()
+    fireEvent.pointerOver(screen.getByRole('button', { name: 'GitHub' }))
+    expect(pose()).toBe('normal')
+    start(); expect(flood.createTechnologyFlood).toHaveBeenCalledOnce()
+    act(() => { timeline().seek(flood.FLOOD_LABELS.sweptAway + .1, false) })
+    expect(view.container.querySelector('section')).toHaveAttribute('data-tide-phase', 'sweptAway')
+    act(() => { timeline().progress(1, false) })
+    expect(screen.getByRole('status')).toHaveTextContent('Docker lo tenía bajo control. Más o menos.')
+    expect(screen.getByRole('button', { name: /Repetir/ })).toBeEnabled()
+    fireEvent.pointerOver(screen.getByRole('button', { name: 'GitHub' }))
+    expect(pose()).toBe('cat')
+  })
+  it('keeps the focused reaction when a pointer leaves after scrolling or tapping', async () => {
+    render(<Technologies />); await ready()
+    const github = screen.getByRole('button', { name: 'GitHub' })
+    act(() => github.focus())
+    fireEvent.pointerOut(github)
+    expect(pose()).toBe('cat')
+    act(() => github.blur())
+    expect(pose()).toBe('normal')
+  })
+  it('skips to the final state and returns focus without creating another timeline', async () => {
+    const view = render(<Technologies />); await ready(); start()
+    act(() => { timeline().seek(flood.FLOOD_LABELS.fill + .2, false) })
+    const button = screen.getByRole('button', { name: 'Saltar' })
+    act(() => button.focus()); fireEvent.click(button)
+    expect(timeline().progress()).toBe(1); expect(timeline().paused()).toBe(true)
+    expect(view.container.querySelector('section')).toHaveAttribute('data-tide-phase', 'settled')
+    expect(screen.getByRole('button', { name: /Repetir/ })).toHaveFocus()
+    expect(screen.queryByRole('button', { name: 'Saltar' })).not.toBeInTheDocument()
+    expect(flood.createTechnologyFlood).toHaveBeenCalledOnce()
+  })
+  it.each(Object.entries(flood.FLOOD_LABELS))('restores every layer when skipping from %s', async (_label, at) => {
+    const view = render(<Technologies />); await ready(); start()
+    act(() => { timeline().seek(at + .12, false) })
+    fireEvent.click(screen.getByRole('button', { name: 'Saltar' }))
+    const opacity = (selector: string) => Number(gsap.getProperty(view.container.querySelector(selector)!, 'opacity'))
+    expect(opacity('.tide-water')).toBe(0)
+    expect(opacity('.tide-whale')).toBe(0)
+    expect(opacity('.tide-actor')).toBe(1)
+    expect(opacity('.tide-idle-poses')).toBe(1)
+    expect(opacity('.tide-pose-swept')).toBe(0)
+    view.container.querySelectorAll('.tide-word').forEach(word => {
+      for (const property of ['x', 'y', 'rotation']) expect(Number(gsap.getProperty(word, property))).toBe(0)
+    })
+    expect(timeline().getChildren().every(tween => tween.repeat() !== -1)).toBe(true)
+  })
+  it('repeats with fresh measurements and kills the previous timeline', async () => {
+    const view = render(<Technologies />); await ready(); start()
+    const first = timeline(), kill = vi.spyOn(first, 'kill')
+    act(() => { first.progress(1, false) })
+    fireEvent.click(screen.getByRole('button', { name: /Repetir/ }))
+    expect(flood.createTechnologyFlood).toHaveBeenCalledTimes(2)
+    expect(kill).toHaveBeenCalledOnce()
+    const second = timeline(), secondKill = vi.spyOn(second, 'kill')
+    // Both useGSAP context reversion and our explicit cleanup may kill it.
+    view.unmount(); expect(secondKill).toHaveBeenCalled()
+  })
+  it('returns all words to zero rather than leaving drift after draining', async () => {
+    const view = render(<Technologies />); await ready(); start()
+    const words = view.container.querySelectorAll('.tide-word')
+    expect(words).toHaveLength(20)
+    words.forEach(word => {
+      const restore = timeline().getChildren().find(tween => 'targets' in tween && tween.targets().includes(word) && tween.vars.x === 0 && tween.vars.y === 0 && tween.vars.rotation === 0)
+      expect(restore).toBeDefined()
+    })
+  })
+  it('places the crest below category headings without a faucet or empty stage', () => {
+    const section = document.createElement('section')
+    section.innerHTML = '<div class="technology-grid"></div><div class="technology-tide"></div>'
+    const lane = section.querySelector<HTMLElement>('.technology-tide')!, grid = section.querySelector<HTMLElement>('.technology-grid')!
+    lane.getBoundingClientRect = () => ({ height: 240, bottom: 1040 } as DOMRect)
+    grid.getBoundingClientRect = () => ({ top: 400 } as DOMRect)
+    expect(flood.floodGeometry(section)).toEqual({ height: 592, surfaceShift: -352 })
+  })
+  it('finishes when scrolling away and removes listeners on unmount', async () => {
+    const view = render(<Technologies />); await ready(); start()
+    view.container.querySelector<HTMLElement>('section')!.getBoundingClientRect = () => ({ top: 2000, bottom: 3000 } as DOMRect)
+    fireEvent.scroll(window)
+    expect(timeline().progress()).toBe(1)
+    expect(screen.getByRole('button', { name: /Repetir/ })).toBeEnabled()
+    view.unmount(); expect(media.removeEventListener).toHaveBeenCalled()
+  })
+  it('offers the static ending with reduced motion and keeps technology reactions working', async () => {
     media.matches = true
-    const first = render(<Technologies />)
-    expect(first.container.querySelector('.technologies')).toHaveAttribute('data-tide-phase', 'done')
-    first.unmount()
-    media.matches = false
-    const second = render(<Technologies />)
-    const section = await intersect(second.container)
+    render(<Technologies />); await ready(); start()
+    expect(flood.createTechnologyFlood).not.toHaveBeenCalled()
+    expect(screen.getByRole('status')).toHaveTextContent('Docker lo tenía bajo control')
+    expect(screen.getByRole('button', { name: /Repetir/ })).toBeEnabled()
+    fireEvent.click(screen.getByRole('button', { name: 'GitHub' }))
+    expect(pose()).toBe('cat')
+  })
+  it('completes a running scene when the motion preference changes', async () => {
+    render(<Technologies />); await ready(); start()
     media.matches = true
     act(() => media.addEventListener.mock.calls.at(-1)![1]())
-    expect(section).toHaveAttribute('data-tide-phase', 'done')
-    expect(vi.getTimerCount()).toBe(0)
+    expect(timeline().progress()).toBe(1)
+    expect(screen.getByText(/sin inundación animada/)).toBeVisible()
   })
-
-  it('cleans observers, timers and media listeners on unmount', async () => {
-    const { container, unmount } = render(<Technologies />)
-    await intersect(container)
-    expect(vi.getTimerCount()).toBe(7)
-    unmount()
-    expect(vi.getTimerCount()).toBe(0)
-    expect(observer.disconnect).toHaveBeenCalled()
-    expect(media.removeEventListener).toHaveBeenCalledWith('change', expect.any(Function))
-  })
-
-  it('keeps all content available if a sprite fails', async () => {
+  it('keeps content and reactions available when a flood asset fails', async () => {
     assetWorks = false
-    const { container } = render(<Technologies />)
-    await act(async () => { await Promise.resolve() })
-    expect(container.querySelector('.technologies')).toHaveAttribute('data-tide-phase', 'done')
-    expect(screen.getAllByRole('listitem')).toHaveLength(13)
+    const view = render(<Technologies />); await ready()
+    expect(screen.getByRole('button', { name: /Ver la ola/ })).toBeDisabled()
+    expect(screen.getAllByRole('listitem')).toHaveLength(15)
+    fireEvent.click(screen.getByRole('button', { name: 'React' }))
+    expect(pose()).toBe('wink')
+    expect(flood.createTechnologyFlood).not.toHaveBeenCalled()
+    view.unmount(); expect(media.removeEventListener).toHaveBeenCalled()
   })
 })
