@@ -1,4 +1,5 @@
 import { FaGithub } from "react-icons/fa";
+import { ThemeToggle } from './ThemeToggle';
 import "./Navbar.css";
 
 export const Navbar = () => {
@@ -39,6 +40,7 @@ export const Navbar = () => {
             />
           </span>
         </a>
+        <ThemeToggle />
         {githubUrl ? (
           <a
             className="github-link nav-bitty-link nav-bitty-github"

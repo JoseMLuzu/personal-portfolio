@@ -1,0 +1,37 @@
+/* Light is the existing art direction. Dark changes lighting, not geometry. */
+:root[data-theme='dark'] { color-scheme: dark; --ink: #050916; --paper: #fff5e6; --line: #c6dcff26; }
+:root[data-theme='dark'] body { background: #050916; }
+:root[data-theme='dark'] .projects.projects-sky {
+  background: linear-gradient(180deg, #0a142a 0%, #152b49 35%, #1b3d5c 65%, #11233f 90%, #080e20 100%);
+}
+:root[data-theme='dark'] .sky-cloud { filter: brightness(.65) saturate(.65); }
+:root[data-theme='dark'] .projects-sky .project-card { background: #081528f5; border-color: #8dcfff40; }
+:root[data-theme='dark'] .projects-sky .project-card:hover,
+:root[data-theme='dark'] .projects-sky .project-card:focus-within { background: #10213b; border-color: #8dcfff90; }
+:root[data-theme='dark'] .technologies {
+  background: linear-gradient(#081326e8, #0b1d35eb 85%, #080e20), url('/assets/stack-beach-sand.png') center / 100% 100% no-repeat;
+  color: #fff5e6;
+}
+:root[data-theme='dark'] .technologies .eyebrow,
+:root[data-theme='dark'] .technology-number,
+:root[data-theme='dark'] .technology-motion-note { color: #b3c7dd; }
+:root[data-theme='dark'] .technology-name { color: #dce8f5; }
+:root[data-theme='dark'] .technology-name:hover,
+:root[data-theme='dark'] .technology-name:focus-visible,
+:root[data-theme='dark'] .technology-selected .technology-name { color: #9eeaff; }
+:root[data-theme='dark'] .technology-name[data-experience]::before { background: #76e4ff; }
+:root[data-theme='dark'] .technology-source-link { color: #9eeaff; }
+:root[data-theme='dark'] .technology-grid { border-color: #9eeaff40; }
+:root[data-theme='dark'] .technology-replay { color: #9eeaff; background: #142b45; border-color: #9eeaff55; }
+:root[data-theme='dark'] .technology-replay:hover:not(:disabled) { background: #1b3a57; }
+:root[data-theme='dark'] .technology-replay:disabled { color: #9caec5; }
+:root[data-theme='dark'] .technology-name:focus-visible,
+:root[data-theme='dark'] .technology-replay:focus-visible,
+:root[data-theme='dark'] .technology-source-link:focus-visible { outline-color: #9eeaff; }
+:root[data-theme='dark'] .about { background: #080e20; }
+:root[data-theme='dark'] .portfolio-engineering,
+:root[data-theme='dark'] .lab-grid article { background: #0d1930; }
+:root[data-theme='dark'] .clippy-balloon,
+:root[data-theme='dark'] .clippy-balloon::after { background: #12213b; color: #e4ecfa; border-color: #84bcde; }
+:root[data-theme='dark'] .clippy-balloon button { color: #b8e9ff; border-color: #648ba6; }
+:root[data-theme='dark'] .clippy-position-controls button { background: #152b45; color: #dce8f5; }
