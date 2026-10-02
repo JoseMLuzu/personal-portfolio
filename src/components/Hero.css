@@ -51,7 +51,8 @@
   mask-mode: alpha;
   image-rendering: pixelated;
   transform: translateX(100%);
-  transition: transform 700ms cubic-bezier(.22,.8,.3,1);
+  transform-origin: right center;
+  transition: transform 700ms var(--motion-travel);
 }
 .hero-actor {
   position: absolute;
@@ -62,7 +63,7 @@
   pointer-events: none;
   opacity: 0;
   transform: translate(.2em, .1em) rotate(6deg);
-  transition: opacity 300ms ease, transform 600ms ease;
+  transition: opacity 240ms ease, transform 600ms var(--motion-settle);
   z-index: 2;
 }
 .hero-bitty-sprite {
@@ -87,6 +88,8 @@
   font: 700 .8rem/1.3 ui-monospace, monospace;
   letter-spacing: 0;
   opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 180ms ease, transform 240ms var(--motion-settle);
 }
 .hero-replay {
   position: absolute;
@@ -112,15 +115,16 @@
 .hero-letter-g { --letter-angle: 28deg; --letter-x: .28em; --letter-delay: 110ms; }
 .hero-letter-a { --letter-angle: 32deg; --letter-x: .34em; --letter-delay: 160ms; }
 .hero-name-scene { --letter-drop: .42em; }
-.hero-name-scene.phase-tipping .hero-loose-letter { animation: hero-letter-drop 680ms var(--letter-delay) cubic-bezier(.4,0,.8,.7) both; }
+.hero-name-scene.phase-tipping .hero-loose-letter { animation: hero-letter-drop 680ms var(--letter-delay) linear both; }
 .hero-name-scene:is(.phase-fallen,.phase-entering,.phase-noticing,.phase-fetching,.phase-closing) .hero-loose-letter { transform: translate(var(--letter-x), var(--letter-drop)) rotate(var(--letter-angle)); }
 .hero-name-scene.phase-entering .hero-actor { opacity: 1; transform: translate(.15em, .34em) rotate(-5deg); }
 .hero-name-scene.phase-entering .hero-bitty-sprite { background-position: 50% 0; }
 .hero-name-scene.phase-noticing .hero-actor { opacity: 1; transform: translate(0, .34em); }
-.hero-name-scene.phase-noticing .hero-bitty-speech { opacity: 1; }
-.hero-name-scene.phase-fetching .hero-actor { opacity: 1; transform: translate(var(--hero-corner-x), .12em); transition: transform 850ms ease-in-out; }
+.hero-name-scene.phase-noticing .hero-bitty-speech { opacity: 1; transform: none; }
+.hero-name-scene.phase-fetching .hero-actor { opacity: 1; transform: translate(var(--hero-corner-x), .12em); transition: transform 850ms var(--motion-travel); }
 .hero-name-scene.phase-fetching .hero-bitty-sprite { background-position: 50% 0; }
-.hero-name-scene.phase-closing .hero-actor { opacity: 1; transform: translate(var(--hero-pull-x), .12em); transition: transform 700ms cubic-bezier(.22,.8,.3,1); z-index: 4; }
+.hero-name-scene:is(.phase-entering,.phase-fetching) .hero-bitty-sprite { animation: hero-bitty-step 210ms ease-in-out 4 alternate; }
+.hero-name-scene.phase-closing .hero-actor { opacity: 1; transform: translate(var(--hero-pull-x), .12em); transition: transform 700ms var(--motion-travel); z-index: 4; }
 .hero-name-scene.phase-closing .hero-bitty-sprite { background-position: 50% 100%; }
 .hero-name-scene:is(.phase-repair-one,.phase-repair-two) .hero-actor { opacity: 0; transform: translate(var(--hero-pull-x), .12em); transition: none; }
 .hero-name-scene:is(.phase-closing, .phase-repair-one, .phase-repair-two, .phase-opening) .hero-curtains { visibility: visible; }
@@ -131,7 +135,7 @@
 /* Reposition behind the opaque curtain, before opening starts. */
 .hero-name-scene:is(.phase-repair-one,.phase-repair-two,.phase-opening,.phase-crooked) .hero-loose-letter { transform: translateY(.02em) rotate(calc(var(--letter-angle) * .25)); transition: transform 500ms ease; }
 .hero-name-scene:is(.phase-opening, .phase-crooked) .hero-bitty-sprite { background-position: 50% 100%; }
-.hero-name-scene.phase-straightening .hero-loose-letter { transform: none; transition: transform 550ms ease; transition-delay: var(--letter-delay); }
+.hero-name-scene.phase-straightening .hero-loose-letter { transform: none; transition: transform 550ms var(--motion-settle); transition-delay: var(--letter-delay); }
 .hero-name-scene.phase-straightening .hero-actor { animation: hero-bitty-tap 650ms ease-in-out; }
 .hero-name-scene.phase-straightening .hero-bitty-sprite { background-position: 50% 100%; }
 .hero-name-scene.phase-done .hero-bitty-sprite { background-position: 100% 100%; }
@@ -140,11 +144,18 @@
 .hero-companion-docked { visibility: hidden; opacity: 0; pointer-events: none; }
 .bitty-hidden .hero-actor, .bitty-hidden .hero-replay { display: none; }
 @keyframes hero-curtain-bump {
-  0%,100% { background-position: -8vh center; -webkit-mask-position: -8vh center; mask-position: -8vh center; }
-  35% { background-position: calc(-8vh + 8px) center; -webkit-mask-position: calc(-8vh + 8px) center; mask-position: calc(-8vh + 8px) center; }
-  65% { background-position: calc(-8vh + 3px) center; -webkit-mask-position: calc(-8vh + 3px) center; mask-position: calc(-8vh + 3px) center; }
+  0%,100% { transform: translateX(0) scaleX(1); }
+  35% { transform: translateX(0) scaleX(1.018); }
+  65% { transform: translateX(0) scaleX(1.006); }
 }
-@keyframes hero-letter-drop { 0% { transform: none; } 25% { transform: rotate(calc(var(--letter-angle) * .3)); } 75% { transform: translate(var(--letter-x), var(--letter-drop)) rotate(var(--letter-angle)); } 88% { transform: translate(var(--letter-x), calc(var(--letter-drop) - .045em)) rotate(calc(var(--letter-angle) * .85)); } 100% { transform: translate(var(--letter-x), var(--letter-drop)) rotate(var(--letter-angle)); } }
+@keyframes hero-letter-drop {
+  0% { transform: none; animation-timing-function: ease-out; }
+  18% { transform: rotate(-3deg); animation-timing-function: cubic-bezier(.55,.02,.85,.45); }
+  72% { transform: translate(var(--letter-x), var(--letter-drop)) rotate(var(--letter-angle)); animation-timing-function: ease-out; }
+  86% { transform: translate(calc(var(--letter-x) * .95), calc(var(--letter-drop) - .055em)) rotate(calc(var(--letter-angle) * .9)); animation-timing-function: ease-in; }
+  100% { transform: translate(var(--letter-x), var(--letter-drop)) rotate(var(--letter-angle)); }
+}
+@keyframes hero-bitty-step { from { transform: translateY(0) rotate(-1deg); } to { transform: translateY(-.025em) rotate(1deg); } }
 @keyframes hero-bitty-tap { 0%,100% { transform: translateX(0); } 45% { transform: translate(-.13em, -.035em) rotate(-5deg); } }
 @media (max-width: 600px) {
   .hero.hero-curtain-intro { min-height: 100svh; padding-top: 8rem; padding-bottom: 4rem; }
@@ -160,7 +171,7 @@
   .hero-name-scene .hero-curtains { display: none !important; }
   .hero-name-scene .hero-loose-letter { transform: none !important; animation: none !important; transition: none !important; }
   .hero-name-scene .hero-actor { opacity: 1; transform: none !important; animation: none !important; transition: none; }
-  .hero-name-scene .hero-bitty-sprite { background-position: 100% 100%; }
+  .hero-name-scene .hero-bitty-sprite { background-position: 100% 100%; animation: none !important; }
   .hero-name-scene .hero-bitty-speech { display: none; }
 }
 
@@ -240,7 +251,7 @@
   transform: rotate(-4deg);
 }
 .hero-edge-speech::after { content: ''; position: absolute; right: 12px; bottom: -9px; width: 14px; height: 14px; border-right: 2px solid #fff5e6; border-bottom: 2px solid #fff5e6; background: #050a19; transform: skewY(35deg); }
-.hero-peek.phase-done .hero-edge-bitty { opacity: 1; transform: none; transition: opacity 240ms ease, transform 400ms cubic-bezier(.2,.8,.2,1); }
+.hero-peek.phase-done .hero-edge-bitty { opacity: 1; transform: none; transition: opacity 320ms ease, transform 650ms var(--motion-settle); }
 .hero-peek.phase-done .hero-name-scene .hero-actor { visibility: hidden; }
 @media (max-width: 900px) {
   .hero.hero-peek { padding-inline: 2rem; }

@@ -44,7 +44,7 @@ export function ProjectArrivalBitty() {
     setLanded(false);
     lookX.jump(0);
     lookY.jump(0);
-    // A single timeline owns the scene; pose swaps are instantaneous.
+    // One timeline owns the scene; short pose crossfades preserve the silhouette.
     const sequence: AnimationSequence = [
       [".arrival-pose", { opacity: 0, x: 0, y: 0, rotate: 0, scaleX: 1, scaleY: 1 }, { duration: 0, at: 0 }],
       [".arrival-caption", { opacity: 0, y: 6 }, { duration: 0, at: 0 }],
@@ -52,29 +52,29 @@ export function ProjectArrivalBitty() {
       [".arrival-impact", { opacity: 0, scale: 0.2 }, { duration: 0, at: 0 }],
       [".arrival-shadow", { opacity: 0, scaleX: 0.3 }, { duration: 0, at: 0 }],
       [".project-arrival-rope", { y: 0, rotate: 0 }, { duration: 0, at: 0 }],
-      [".arrival-rig", { y: [-220, 0], rotate: [-8, 5, -3, 0], x: 0 }, { duration: 1.3, at: 0.12, ease: [0.16, 1, 0.3, 1] }],
+      [".arrival-rig", { y: [-220, 0], rotate: [-5, 3, -1, 0], x: 0 }, { duration: 1.3, at: 0.12, ease: [0.22, 1, 0.36, 1] }],
       [".project-arrival-rope", { opacity: [0, 1], scaleY: [0.8, 1] }, { duration: 0.5, at: 0.05 }],
-      [".project-arrival-hang", { opacity: 1 }, { duration: 0.01, at: 0.18 }],
+      [".project-arrival-hang", { opacity: 1 }, { duration: 0.12, at: 0.18 }],
       [".arrival-shadow", { opacity: 0.3, scaleX: 0.65 }, { duration: 1, at: 0.3 }],
-      [".arrival-rig", { rotate: [0, -7, 6, -3, 0], x: [0, -3, 4, -2, 0] }, { duration: 0.75, at: 1.42, ease: "easeInOut" }],
+      [".arrival-rig", { rotate: [0, -5, 4, -2, 0], x: [0, -2, 3, -1, 0] }, { duration: 0.75, at: 1.42, ease: "easeInOut" }],
       [".arrival-warning", { opacity: [0, 1, 1, 0], scale: [0.6, 1.1, 1, 0.8] }, { duration: 0.65, at: 1.62 }],
       [".project-arrival-hang", { y: -6, rotate: -5 }, { duration: 0.16, at: 2.17, ease: "easeOut" }],
-      [".project-arrival-hang", { opacity: 0 }, { duration: 0.01, at: 2.33 }],
+      [".project-arrival-hang", { opacity: 0 }, { duration: 0.08, at: 2.33 }],
       [".project-arrival-rope", { y: -110, rotate: -12, opacity: 0 }, { duration: 0.35, at: 2.33, ease: "easeIn" }],
-      [".project-arrival-fall", { opacity: 1 }, { duration: 0.01, at: 2.33 }],
+      [".project-arrival-fall", { opacity: 1 }, { duration: 0.08, at: 2.33 }],
       // A suspended comic beat followed by accelerated gravity.
       [".project-arrival-fall", { y: [0, -5, 80], x: [0, 3, 12], rotate: [-6, -8, 14] }, { duration: 0.58, at: 2.33, times: [0, 0.2, 1], ease: [0.55, 0.02, 0.9, 0.45] }],
       [".arrival-shadow", { opacity: 0.6, scaleX: 1.1 }, { duration: 0.44, at: 2.47, ease: "easeIn" }],
-      [".project-arrival-fall", { opacity: 0 }, { duration: 0.01, at: 2.91 }],
-      [".project-arrival-land", { opacity: 1 }, { duration: 0.01, at: 2.91 }],
-      [".project-arrival-land", { scaleX: [1.14, 0.96, 1], scaleY: [0.8, 1.04, 1], y: [9, -7, 0], rotate: [3, -2, 0] }, { duration: 0.55, at: 2.91, ease: "easeOut" }],
+      [".project-arrival-fall", { opacity: 0 }, { duration: 0.08, at: 2.91 }],
+      [".project-arrival-land", { opacity: 1 }, { duration: 0.08, at: 2.91 }],
+      [".project-arrival-land", { scaleX: [1.08, 0.98, 1], scaleY: [0.9, 1.02, 1], y: [5, -3, 0], rotate: [2, -1, 0] }, { duration: 0.65, at: 2.91, ease: "easeOut" }],
       [".arrival-impact", { opacity: [0.8, 0], scale: [0.2, 1.7] }, { duration: 0.55, at: 2.91, ease: "easeOut" }],
       ...sparks.map((spark, i): AnimationSequence[number] => [`.arrival-spark-${i}`, { opacity: [0, 1, 0], x: [0, spark.x], y: [0, spark.y, -spark.y * 0.2], rotate: [0, i % 2 ? 120 : -100], scale: [1, 0.3] }, { duration: 0.6, at: 2.91, ease: "easeOut" }]),
       [".arrival-shadow", { opacity: 0.3, scaleX: 0.85 }, { duration: 0.5, at: 3.05 }],
       [".project-arrival-land", { rotate: [0, -3, 0] }, { duration: 0.5, at: 3.55, ease: "easeInOut" }],
-      [".project-arrival-land", { opacity: 0 }, { duration: 0.01, at: 4.13 }],
-      [".project-arrival-final", { opacity: 1 }, { duration: 0.01, at: 4.13 }],
-      [".project-arrival-final", { y: [12, -6, 0], scaleY: [0.9, 1.03, 1], rotate: [-3, 2, 0] }, { duration: 0.45, at: 4.13, ease: "easeOut" }],
+      [".project-arrival-land", { opacity: 0 }, { duration: 0.16, at: 4.13 }],
+      [".project-arrival-final", { opacity: 1 }, { duration: 0.16, at: 4.13 }],
+      [".project-arrival-final", { y: [6, -2, 0], scaleY: [0.96, 1.01, 1], rotate: [-2, 1, 0] }, { duration: 0.5, at: 4.13, ease: "easeOut" }],
       [".arrival-caption", { opacity: 1, y: 0 }, { duration: 0.3, at: 4.4 }],
     ];
     const controls = animate(sequence);
@@ -122,7 +122,7 @@ export function ProjectArrivalBitty() {
         <motion.span className="project-arrival-final arrival-pose">
           <motion.span className="project-arrival-final-sprite"
             animate={landed && !staticPose ? { y: [0, -2, 0] } : { y: 0 }}
-            transition={{ duration: 3.2, repeat: landed && !staticPose ? Infinity : 0, ease: "easeInOut" }}>
+            transition={{ duration: 3.2, repeat: 0, ease: "easeInOut" }}>
             {(["left", "right"] as const).map((eye) => (
               <span key={eye} className={`project-arrival-eye project-arrival-eye--${eye}`}>
                 <motion.img className="project-arrival-pupil" src="/assets/bitty-pupil.png" alt="" style={{ x: pupilX, y: pupilY }} />

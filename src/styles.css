@@ -17,6 +17,8 @@
   --cyan: #76e4ff;
   --acid: #d8ff5b;
   --line: rgba(220, 231, 255, 0.18);
+  --motion-settle: cubic-bezier(.22, 1, .36, 1);
+  --motion-travel: cubic-bezier(.65, 0, .35, 1);
 }
 
 * {
@@ -454,14 +456,15 @@ h2 {
 .arrival-spark:nth-of-type(even) { background: #f4b831; }
 .arrival-caption {
   position: absolute;
-  top: 155px;
+  top: 80px;
   left: 10px;
   right: 10px;
   padding: 8px 10px;
   background: #070a18;
   border: 1px solid #76e4ff;
   color: #f5f7ff;
-  box-shadow: 3px 3px 0 #76e4ff;
+  border-radius: 8px 8px 2px 8px;
+  box-shadow: 0 4px 16px #070a1818;
   font: 500 12px/1.35 ui-monospace, monospace;
   text-align: center;
   opacity: 0;
@@ -936,7 +939,7 @@ h2 {
   aspect-ratio: 432 / 405;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.16s ease;
+  transition: opacity .24s ease;
 }
 .project-bitty-sprite {
   position: relative;
@@ -948,8 +951,7 @@ h2 {
   background-size: 300% 300%;
   image-rendering: pixelated;
   filter: drop-shadow(0 12px 12px rgba(22, 54, 118, 0.2));
-  transition: transform 0.58s cubic-bezier(0.2, 1.25, 0.35, 1);
-  will-change: transform;
+  transition: transform .55s var(--motion-settle);
 }
 
 /* Seeds: Bitty leans out around the outer-left edge of the grid. */
@@ -960,7 +962,7 @@ h2 {
 }
 .project-bitty--corner-peek .project-bitty-sprite {
   background-position: 100% 100%;
-  transform: translateX(4rem) rotate(11deg);
+  transform: translateX(2.25rem) rotate(8deg);
   transform-origin: right center;
 }
 
@@ -974,7 +976,7 @@ h2 {
   background-image: url("/assets/bitty-project-poses.png");
   background-size: 200% 100%;
   background-position: 0 50%;
-  transform: translateY(4rem) rotate(5deg);
+  transform: translateY(2rem) rotate(4deg);
   transform-origin: center bottom;
 }
 
@@ -988,7 +990,7 @@ h2 {
   background-image: url("/assets/bitty-project-poses.png");
   background-size: 200% 100%;
   background-position: 100% 50%;
-  transform: translateY(-4rem) rotate(-4deg);
+  transform: translateY(-2rem) rotate(-4deg);
   transform-origin: center top;
 }
 
