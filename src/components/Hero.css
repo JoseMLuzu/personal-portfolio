@@ -183,20 +183,11 @@
   padding-top: clamp(9rem, 17vh, 11rem);
 }
 .hero.hero-peek::after {
-  display: block;
-  inset: 0 0 0 auto;
-  width: clamp(1rem, 5vw, 5rem);
-  height: 100%;
-  aspect-ratio: auto;
-  border: 0;
-  border-left: 1px solid #506486;
-  background: linear-gradient(100deg, #182740, #0b142a);
-  transform: none;
-  clip-path: polygon(100% 0, 100% 100%, 0 100%, 75% 0);
-  z-index: 1;
-  pointer-events: none;
-  opacity: 1;
+  display: none;
 }
+.hero-static-curtain { position: absolute; inset: 0 0 0 auto; width: clamp(12rem, 32vw, 36rem); overflow: hidden; pointer-events: none; z-index: 1; }
+/* Offset the source's transparent right margin, not the curtain used by the scene. */
+.hero-static-curtain img { position: absolute; right: 0; height: 100%; width: auto; max-width: none; transform: translateX(10%); image-rendering: pixelated; }
 .hero-peek .hero-copy { width: min(100%, 1280px); }
 .hero-peek .eyebrow { font: 500 1rem/1.4 ui-monospace, monospace; color: #8291ba; margin-bottom: 1.3rem; }
 .hero-peek .hero-name-scene h1 { font-size: clamp(2.5rem, 8.6vw, 8.5rem); line-height: .98; letter-spacing: -.065em; }
@@ -229,15 +220,15 @@
 .hero-button-arrow path { stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
 .hero-edge-bitty {
   position: absolute;
-  right: -1.25rem;
-  top: 23%;
-  width: clamp(15rem, 26vw, 27rem);
+  right: 1.5rem;
+  top: 26%;
+  width: clamp(13rem, 21vw, 23rem);
   z-index: 2;
   pointer-events: none;
   opacity: 0;
   transform: translateX(35%);
 }
-.hero-edge-bitty img { display: block; width: 100%; height: auto; transform: scaleX(-1) rotate(-8deg); image-rendering: pixelated; }
+.hero-edge-bitty img { display: block; width: 100%; height: auto; transform: rotate(-3deg); image-rendering: pixelated; }
 .hero-edge-speech {
   position: absolute;
   top: 0;
@@ -255,7 +246,7 @@
 .hero-peek.phase-done .hero-name-scene .hero-actor { visibility: hidden; }
 @media (max-width: 900px) {
   .hero.hero-peek { padding-inline: 2rem; }
-  .hero-edge-bitty { width: 12rem; right: -2rem; top: 22%; }
+  .hero-edge-bitty { width: 10rem; right: .75rem; top: 19%; }
   .hero-edge-speech { font-size: .8rem; top: -.5rem; right: 50%; }
 }
 @media (max-width: 600px) {
@@ -267,8 +258,9 @@
   .hero-peek .intro { max-width: 18rem; }
   .hero-peek .primary-action { font-size: 1rem; padding: 1rem 1.4rem; gap: 1.5rem; }
   .hero-button-arrow { width: 4.5rem; height: 3rem; top: -1.4rem; }
-  .hero-edge-bitty { top: 19%; right: -2rem; width: 7rem; }
+  .hero-edge-bitty { top: 17%; right: .75rem; width: 5rem; }
   .hero-edge-speech { display: none; }
+  .hero-static-curtain { width: 3.5rem; }
 }
 .bitty-hidden .hero-edge-bitty { display: none; }
 @media (prefers-reduced-motion: reduce) {

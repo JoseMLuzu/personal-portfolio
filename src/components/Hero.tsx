@@ -4,6 +4,9 @@ import { BittyScene, type HeroPhase } from './BittyScene'
 export function Hero() {
   const [phase, setPhase] = useState<HeroPhase>('ready')
   return <section className={`hero hero-curtain-intro hero-peek phase-${phase}`} id="inicio" aria-label="Introducing José Manuel">
+    <div className="hero-static-curtain" aria-hidden="true">
+      <img src="/assets/hero-corner-curtain.png" alt="" width="1536" height="1024" />
+    </div>
     <div className="hero-copy">
       <p className="eyebrow"><span aria-hidden="true">// </span>Hi, I’m José.</p>
       <BittyScene onPhaseChange={setPhase} />
@@ -18,7 +21,7 @@ export function Hero() {
     </div>
     <div className="hero-edge-bitty" aria-hidden="true">
       <span className="hero-edge-speech">Yes, the button works.</span>
-      <img src="/assets/bitty-rope-hang.png" alt="" width="1024" height="1536" />
+      <img src="/assets/bitty-hero-inspect.png" alt="" width="1024" height="1536" />
     </div>
   </section>
 }

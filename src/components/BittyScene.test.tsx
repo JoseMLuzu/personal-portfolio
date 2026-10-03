@@ -41,6 +41,9 @@ describe('hero curtain scene', () => {
     expect(screen.getByRole('link', { name: /see my work/i })).toHaveAttribute('href', '#proyectos')
     expect(container.querySelector('.hero-name-scene')).toHaveAttribute('data-phase', 'ready')
     expect(container.querySelector('.hero-surname')).toHaveAttribute('aria-hidden', 'true')
+    expect(container.querySelector('.hero-edge-bitty img')).toHaveAttribute('src', '/assets/bitty-hero-inspect.png')
+    expect(container.querySelector('.hero-edge-bitty')).toHaveAttribute('aria-hidden', 'true')
+    expect(container.querySelector('.hero-static-curtain img')).toHaveAttribute('src', '/assets/hero-corner-curtain.png')
     expect(Array.from(container.querySelectorAll('.hero-loose-letter')).map(letter => letter.textContent).join('')).toBe('iaga')
   })
 
