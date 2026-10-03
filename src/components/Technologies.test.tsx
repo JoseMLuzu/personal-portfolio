@@ -25,13 +25,15 @@ describe('optional stack flood', () => {
   it('shows only skill names while keeping accessible descriptions and Bitty reactions', async () => {
     render(<Technologies />); await ready()
     const section = screen.getByRole('region', { name: /tools i build with/i })
-    expect(within(section).getAllByRole('article')).toHaveLength(5)
-    expect(within(section).getAllByRole('listitem')).toHaveLength(15)
+    expect(within(section).getAllByRole('article')).toHaveLength(4)
+    expect(within(section).getAllByRole('listitem')).toHaveLength(13)
     expect(section.querySelectorAll('.technology-grid p')).toHaveLength(0)
     expect(screen.getByRole('button', { name: 'Python' })).toHaveAccessibleDescription('Bitty’s backend is written in Python.')
     expect(screen.getByRole('button', { name: 'Python' }).closest('li')).toHaveTextContent('Experience')
-    expect(screen.getByRole('button', { name: 'GSAP' }).closest('li')).toHaveTextContent('This portfolio')
-    expect(screen.queryByRole('button', { name: 'Docker' })).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Docker' }).closest('li')).toHaveTextContent('Experience')
+    for (const name of ['JavaScript', 'TypeScript', 'Python', 'React', 'Flask', 'PostgreSQL', 'Supabase', 'Git', 'GitHub', 'Docker', 'Swift', 'Capacitor', 'WordPress']) {
+      expect(screen.getByRole('button', { name })).toBeVisible()
+    }
     expect(screen.queryByRole('button', { name: /Docker · scene reference/ })).not.toBeInTheDocument()
     expect(section.querySelector('.technology-feedback')).not.toBeInTheDocument()
     expect(screen.queryByText(/Experience en React, Python y bases de datos/)).not.toBeInTheDocument()
@@ -60,11 +62,11 @@ describe('optional stack flood', () => {
     expect(pose()).toBe('normal')
     await user.click(screen.getByRole('button', { name: 'GitHub' }))
     expect(pose()).toBe('cat')
-    act(() => screen.getByRole('button', { name: 'GSAP' }).focus())
+    act(() => screen.getByRole('button', { name: 'Docker' }).focus())
     expect(pose()).toBe('whale')
     await user.keyboard('{Escape}')
     expect(pose()).toBe('normal')
-    await user.click(screen.getByRole('button', { name: 'GSAP' }))
+    await user.click(screen.getByRole('button', { name: 'Docker' }))
     expect(pose()).toBe('whale')
     expect(flood.createTechnologyFlood).not.toHaveBeenCalled()
   })
@@ -133,7 +135,7 @@ describe('optional stack flood', () => {
   it('returns all words to zero rather than leaving drift after draining', async () => {
     const view = render(<Technologies />); await ready(); start()
     const words = view.container.querySelectorAll('.tide-word')
-    expect(words).toHaveLength(20)
+    expect(words).toHaveLength(17)
     words.forEach(word => {
       const restore = timeline().getChildren().find(tween => 'targets' in tween && tween.targets().includes(word) && tween.vars.x === 0 && tween.vars.y === 0 && tween.vars.rotation === 0)
       expect(restore).toBeDefined()
@@ -175,7 +177,7 @@ describe('optional stack flood', () => {
     assetWorks = false
     const view = render(<Technologies />); await ready()
     expect(screen.getByRole('button', { name: /Watch the wave/ })).toBeDisabled()
-    expect(screen.getAllByRole('listitem')).toHaveLength(15)
+    expect(screen.getAllByRole('listitem')).toHaveLength(13)
     fireEvent.click(screen.getByRole('button', { name: 'React' }))
     expect(pose()).toBe('wink')
     expect(flood.createTechnologyFlood).not.toHaveBeenCalled()

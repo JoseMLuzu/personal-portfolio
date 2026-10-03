@@ -111,7 +111,7 @@ export const guideCopy: Record<GuideStop, { title: string; text: string }> = {
   seeds: { title: 'Another idea on a napkin?', text: 'I brought a folder: it’s called Seeds. Try the app or explore the case study. Personal contributions still need documentation; my imagination doesn’t count as evidence.' },
   hostiqr: { title: 'Looks like you’re exploring HostiQR…', text: 'QR-based digital reception for accommodations. I greet this portfolio’s visitors. Unpaid, but animated. Shall I open the demo?' },
   fintrack: { title: 'Still a work in progress here.', text: 'FinTrack has no confirmed demo. I could invent an amazing story, but my contract bans hype. Let me show you what still needs documentation.' },
-  tecnologias: { title: 'A stack without magic percentages.', text: 'Confirmed experience is distinguished from tools used in this portfolio. The whale is my transport, not an extra skill on the résumé.' },
+  tecnologias: { title: 'A stack without magic percentages.', text: 'These are José’s selected technologies. Project-specific details are still being documented. Hover or focus a name to see my reaction. Docker also provides my emergency transport.' },
   'sobre-mi': { title: 'Want evidence, not just acrobatics?', text: 'Good question. Adjust my eyes live and inspect the code behind them. I’ll also show you a local reply that works without AI.' },
   final: { title: 'You reached the end. I survived.', text: 'Shall we inspect the source or return to the projects? If you only came to watch me fall, I get that too.' },
 }
