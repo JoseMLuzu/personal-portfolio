@@ -4,9 +4,6 @@ import { BittyScene, type HeroPhase } from './BittyScene'
 export function Hero() {
   const [phase, setPhase] = useState<HeroPhase>('ready')
   return <section className={`hero hero-curtain-intro hero-peek phase-${phase}`} id="inicio" aria-label="Introducing José Manuel">
-    <div className="hero-static-curtain" aria-hidden="true">
-      <img src="/assets/hero-corner-curtain.png" alt="" width="1536" height="1024" />
-    </div>
     <div className="hero-copy">
       <p className="eyebrow"><span aria-hidden="true">// </span>Hi, I’m José.</p>
       <BittyScene onPhaseChange={setPhase} />

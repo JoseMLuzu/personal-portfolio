@@ -185,9 +185,6 @@
 .hero.hero-peek::after {
   display: none;
 }
-.hero-static-curtain { position: absolute; inset: 0 0 0 auto; width: clamp(12rem, 32vw, 36rem); overflow: hidden; pointer-events: none; z-index: 1; }
-/* Offset the source's transparent right margin, not the curtain used by the scene. */
-.hero-static-curtain img { position: absolute; right: 0; height: 100%; width: auto; max-width: none; transform: translateX(10%); image-rendering: pixelated; }
 .hero-peek .hero-copy { width: min(100%, 1280px); }
 .hero-peek .eyebrow { font: 500 1rem/1.4 ui-monospace, monospace; color: #8291ba; margin-bottom: 1.3rem; }
 .hero-peek .hero-name-scene h1 { font-size: clamp(2.5rem, 8.6vw, 8.5rem); line-height: .98; letter-spacing: -.065em; }
@@ -260,7 +257,6 @@
   .hero-button-arrow { width: 4.5rem; height: 3rem; top: -1.4rem; }
   .hero-edge-bitty { top: 17%; right: .75rem; width: 5rem; }
   .hero-edge-speech { display: none; }
-  .hero-static-curtain { width: 3.5rem; }
 }
 .bitty-hidden .hero-edge-bitty { display: none; }
 @media (prefers-reduced-motion: reduce) {

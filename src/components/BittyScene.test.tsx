@@ -43,7 +43,8 @@ describe('hero curtain scene', () => {
     expect(container.querySelector('.hero-surname')).toHaveAttribute('aria-hidden', 'true')
     expect(container.querySelector('.hero-edge-bitty img')).toHaveAttribute('src', '/assets/bitty-hero-inspect.png')
     expect(container.querySelector('.hero-edge-bitty')).toHaveAttribute('aria-hidden', 'true')
-    expect(container.querySelector('.hero-static-curtain img')).toHaveAttribute('src', '/assets/hero-corner-curtain.png')
+    expect(container.querySelector('.hero-static-curtain')).not.toBeInTheDocument()
+    expect(container.querySelector('.hero-curtain')).toBeInTheDocument()
     expect(Array.from(container.querySelectorAll('.hero-loose-letter')).map(letter => letter.textContent).join('')).toBe('iaga')
   })
 
