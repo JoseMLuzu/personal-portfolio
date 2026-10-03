@@ -8,13 +8,20 @@
   background: linear-gradient(180deg, #102b53 0%, #246599 30%, #3c92bd 65%, #286b94 90%, #122e51 100%);
 }
 .project-sky-art { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
-.sky-cloud { position: absolute; width: clamp(250px, 42vw, 650px); height: auto; opacity: .5; image-rendering: pixelated; }
-.sky-cloud-0 { top: 1%; left: -11%; opacity: .24; }
-.sky-cloud-1 { top: 17%; right: -10%; width: 48%; opacity: .55; }
-.sky-cloud-2 { top: 37%; left: -14%; }
-.sky-cloud-3 { top: 52%; right: -16%; opacity: .3; }
-.sky-cloud-4 { top: 72%; left: -8%; width: 50%; opacity: .34; }
-.sky-cloud-5 { bottom: -3%; right: -8%; opacity: .55; }
+.sky-cloud { position: absolute; width: clamp(160px, 24vw, 380px); height: auto; opacity: .35; image-rendering: pixelated; }
+/* Uneven spacing and scale suggest depth without filling every empty area. */
+.sky-cloud-0 { top: 1%; left: 2%; width: 18%; opacity: .2; }
+.sky-cloud-1 { top: 17%; right: -4%; width: 28%; opacity: .4; }
+.sky-cloud-2 { top: 39%; left: -7%; width: 24%; opacity: .25; }
+.sky-cloud-3 { top: 68%; right: 4%; width: 15%; opacity: .3; }
+.sky-cloud-4 { top: 79%; left: 3%; width: 30%; opacity: .28; }
+.sky-cloud-5 { bottom: -1%; right: -3%; width: 23%; opacity: .38; }
+/* Each word is made of cloud puffs and shares the sky's scroll parallax. */
+.sky-cloud.sky-cloud-word { width: clamp(145px, 17vw, 240px); opacity: .75; }
+.sky-cloud-word svg { display: block; width: 100%; height: auto; }
+.sky-cloud-word-1 { top: 3%; right: 32%; width: clamp(130px, 14vw, 200px); }
+.sky-cloud-word-3 { top: 51%; right: 5%; }
+.sky-cloud-word-5 { bottom: 10%; right: 1.5%; }
 .projects-sky-content { position: relative; z-index: 2; max-width: 1200px; margin-inline: auto; padding-right: var(--sky-lane); }
 .projects-sky .section-heading { grid-template-columns: 1fr; gap: 1.75rem; margin-bottom: 4rem; }
 .projects-sky h2 { font-size: clamp(3rem, 6.5vw, 6.2rem); line-height: .98; letter-spacing: -.065em; }
@@ -73,8 +80,11 @@
   .projects-sky .project-detail { padding: .75rem; }
   .sky-diver { top: 40px; right: 3px; width: 76px; }
   .sky-diver-caption { display: none; }
-  .sky-cloud { width: 90%; opacity: .24; }
-  .sky-cloud-1, .sky-cloud-4 { width: 95%; }
+  .sky-cloud { width: 45%; opacity: .24; }
+  .sky-cloud-0, .sky-cloud-3 { width: 32%; }
+  .sky-cloud-1, .sky-cloud-4 { width: 52%; }
+  .sky-cloud.sky-cloud-word { right: 0; width: 80px; }
+  .sky-cloud.sky-cloud-word-1 { right: 28%; width: 66px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .sky-diver, .sky-diver-rig, .sky-cloud { transform: none !important; }

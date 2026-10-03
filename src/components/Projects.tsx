@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { projects } from '../content/projects'
 import { ProjectCard } from './ProjectCard'
+import { CloudTechnology } from './CloudTechnology'
 import './Projects.css'
 
 gsap.registerPlugin(ScrollTrigger, useGSAP)
@@ -54,6 +55,9 @@ export function Projects() {
   return <section ref={sectionRef} className="projects projects-sky" id="proyectos" aria-labelledby="projects-title">
     <div className="project-sky-art" aria-hidden="true">
       {[0, 1, 2, 3, 4, 5].map(index => <img key={index} className={`sky-cloud sky-cloud-${index}`} src="/assets/project-sky-clouds.png" width="2172" height="724" alt="" />)}
+      <CloudTechnology name="AWS" index={1} />
+      <CloudTechnology name="Azure" index={3} />
+      <CloudTechnology name="Google Cloud" index={5} />
     </div>
     <div className="sky-diver" aria-hidden="true">
       <div className="sky-diver-rig">

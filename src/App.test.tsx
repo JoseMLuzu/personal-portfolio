@@ -23,6 +23,15 @@ describe('portfolio navigation', () => {
     expect(screen.getByRole('navigation', { name: /main navigation/i })).toBeVisible()
     expect(container.querySelector('.projects-sky')).toBeInTheDocument()
     expect(container.querySelector('.sky-diver')).toHaveAttribute('aria-hidden', 'true')
+    expect(container.querySelector('[data-cloud-word="AWS"]')).toHaveAttribute('aria-hidden', 'true')
+    for (const name of ['AWS', 'Azure', 'Google Cloud']) {
+      const cloud = container.querySelector(`[data-cloud-word="${name}"]`)
+      expect(cloud?.querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
+      expect(cloud?.querySelectorAll('circle').length).toBeGreaterThan(30)
+      expect(cloud?.querySelector('img')).toBeNull()
+      expect(container.querySelector('#tecnologias')).not.toHaveTextContent(name)
+    }
+    expect(container.querySelector('#tecnologias')).not.toHaveTextContent('AWS')
     expect(screen.getByRole('heading', { name: 'Seeds' })).toBeVisible()
     expect(screen.getByRole('heading', { name: 'HostiQR' })).toBeVisible()
     expect(screen.getByRole('heading', { name: 'FinTrack' })).toBeVisible()
