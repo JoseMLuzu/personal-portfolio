@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { ThemeToggle, THEME_STORAGE_KEY } from './ThemeToggle'
 
 beforeEach(() => { localStorage.clear(); delete document.documentElement.dataset.theme })
-afterEach(() => { vi.restoreAllMocks(); delete document.documentElement.dataset.theme })
+afterEach(() => { vi.useRealTimers(); vi.restoreAllMocks(); delete document.documentElement.dataset.theme })
 
 describe('portfolio theme', () => {
   it('defaults to the current light design and saves keyboard changes', async () => {
@@ -12,10 +12,13 @@ describe('portfolio theme', () => {
     render(<ThemeToggle />)
     const button = screen.getByRole('button', { name: 'Switch to dark mode' })
     expect(document.documentElement).toHaveAttribute('data-theme', 'light')
+    expect(button.querySelector('.theme-bitty-stage')).toHaveAttribute('aria-hidden', 'true')
+    expect(button.querySelector('img[data-visible="true"]')).toHaveAttribute('src', '/assets/bitty-theme-sleepy.png')
     button.focus(); await user.keyboard('{Enter}')
     expect(button).toHaveAttribute('aria-pressed', 'true')
     expect(document.documentElement).toHaveAttribute('data-theme', 'dark')
     expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe('dark')
+    expect(button.querySelector('img[data-visible="true"]')).toHaveAttribute('src', '/assets/bitty-theme-sunglasses.png')
     await user.keyboard(' ')
     expect(document.documentElement).toHaveAttribute('data-theme', 'light')
     expect(localStorage.getItem(THEME_STORAGE_KEY)).toBe('light')
@@ -32,5 +35,31 @@ describe('portfolio theme', () => {
     render(<ThemeToggle />)
     await userEvent.click(screen.getByRole('button', { name: 'Switch to dark mode' }))
     expect(document.documentElement).toHaveAttribute('data-theme', 'dark')
+  })
+  it('shows only the latest celestial cue and clears it after the orbit', () => {
+    vi.useFakeTimers()
+    const { container, unmount } = render(<ThemeToggle />)
+    expect(container.querySelector('.theme-celestial')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Switch to dark mode' }))
+    expect(container.querySelector('.theme-celestial')).toHaveAttribute('aria-hidden', 'true')
+    expect(container.querySelector('.theme-celestial img')).toHaveAttribute('src', '/assets/theme-pixel-moon.png')
+    fireEvent.click(screen.getByRole('button', { name: 'Switch to light mode' }))
+    expect(container.querySelectorAll('.theme-celestial')).toHaveLength(1)
+    expect(container.querySelector('.theme-celestial img')).toHaveAttribute('src', '/assets/theme-pixel-sun.png')
+    act(() => vi.advanceTimersByTime(3500))
+    expect(container.querySelector('.theme-celestial')).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'Switch to dark mode' }))
+    unmount()
+    expect(vi.getTimerCount()).toBe(0)
+  })
+  it('shows a short static cue for reduced motion', () => {
+    vi.useFakeTimers()
+    vi.spyOn(window, 'matchMedia').mockReturnValue({ matches: true } as MediaQueryList)
+    const { container } = render(<ThemeToggle />)
+    fireEvent.click(screen.getByRole('button', { name: 'Switch to dark mode' }))
+    act(() => vi.advanceTimersByTime(1999))
+    expect(container.querySelector('.theme-celestial')).toBeInTheDocument()
+    act(() => vi.advanceTimersByTime(1))
+    expect(container.querySelector('.theme-celestial')).toBeNull()
   })
 })

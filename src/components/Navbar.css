@@ -2,6 +2,26 @@
 .theme-toggle { display: inline-grid; place-items: center; flex: 0 0 auto; width: 2.25rem; height: 2.25rem; padding: 0; border: 1px solid #76e4ff6b; border-radius: 50%; background: #76e4ff14; color: #fff5e6; cursor: pointer; transition: background-color 180ms ease, color 180ms ease; }
 .theme-toggle:hover { color: #080e20; background: #76e4ff; }
 .theme-toggle:focus-visible { outline: 2px solid #76e4ff; outline-offset: 4px; }
+.theme-toggle { position: relative; }
+.theme-bitty-stage {
+  position: absolute; top: calc(100% + .35rem); left: 50%;
+  width: 3.56rem; aspect-ratio: 2 / 3;
+  opacity: 0; visibility: hidden; transform: translate(-50%, -.35rem) scale(.94);
+  transition: opacity 180ms ease, visibility 180ms, transform 320ms var(--motion-settle);
+  pointer-events: none; user-select: none;
+}
+.theme-bitty-pose { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; opacity: 0; transition: opacity 180ms ease; }
+.theme-bitty-pose[data-visible='true'] { opacity: 1; }
+.theme-toggle:focus-visible .theme-bitty-stage { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); }
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle:hover .theme-bitty-stage { opacity: 1; visibility: visible; transform: translate(-50%, 0) scale(1); }
+}
+.bitty-hidden .theme-bitty-stage { display: none; }
+@media (max-width: 600px) { .theme-bitty-stage { width: 2.625rem; } }
+@media (prefers-reduced-motion: reduce) {
+  .theme-bitty-stage, .theme-bitty-pose { transition: none; }
+  .theme-bitty-stage { transform: translate(-50%, 0); }
+}
 .nav-bitty-link {
   position: relative;
 }
@@ -9,8 +29,8 @@
   position: absolute;
   bottom: calc(100% - .15rem);
   left: 50%;
-  width: 4.25rem;
-  height: 4.75rem;
+  width: 3.19rem;
+  height: 3.56rem;
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
@@ -25,7 +45,7 @@
 }
 .nav-bitty {
   position: absolute;
-  bottom: -1.5rem;
+  bottom: -1.125rem;
   left: 0;
   display: block;
   width: 100%;
@@ -36,25 +56,26 @@
 }
 /* Lower body stays behind the word, making the upper half climb into view. */
 .nav-bitty-about .nav-bitty-stage {
-  width: 6.5rem;
-  height: 4.35rem;
-  bottom: calc(100% - .45rem);
+  width: 4.875rem;
+  height: 3.26rem;
+  bottom: calc(100% - .34rem);
   overflow: visible;
 }
 .nav-bitty-about .nav-bitty { bottom: 0; }
-/* Reserve a side seat so the kiss pose stays inside the viewport. */
+/* Kneeling Bitty admires the logo from the right, leaving it unobstructed. */
 .nav-with-bitty .nav-links { padding-right: 5.25rem; }
 .nav-bitty-github .nav-bitty-stage {
-  width: 5rem;
-  height: 5.36rem;
+  width: 3.75rem;
+  height: 5.625rem;
   top: 50%;
   bottom: auto;
-  left: calc(100% - .65rem);
+  left: calc(100% + .5rem);
   overflow: visible;
-  transform: translate(.5rem, -50%) rotate(6deg);
+  transform: translate(.4rem, -42%) rotate(5deg);
   transform-origin: left center;
 }
 .nav-bitty-github .nav-bitty { bottom: 0; }
+.nav-bitty-github > svg { position: relative; z-index: 1; }
 .nav-bitty-link:focus-visible .nav-bitty-stage {
   opacity: 1;
   visibility: visible;
@@ -68,13 +89,13 @@
     transform: translate(-50%, 0);
   }
   .nav-bitty-projects:hover .nav-bitty { animation: nav-bitty-climb 550ms ease-out both; }
-  .nav-bitty-github:hover .nav-bitty-stage { transform: translate(0, -50%); }
+  .nav-bitty-github:hover .nav-bitty-stage { transform: translate(0, -42%); }
 }
-.nav-bitty-github:focus-visible .nav-bitty-stage { transform: translate(0, -50%); }
+.nav-bitty-github:focus-visible .nav-bitty-stage { transform: translate(0, -42%); }
 @media (max-width: 600px) {
   .nav.nav-with-bitty { gap: .75rem; }
   .nav-with-bitty .nav-links { gap: .5rem; padding-right: 3rem; }
-  .nav-bitty-github .nav-bitty-stage { width: 4rem; height: 4.29rem; }
+  .nav-bitty-github .nav-bitty-stage { width: 2.75rem; height: 4.125rem; }
 }
 @keyframes nav-bitty-climb {
   0% { transform: translateY(1rem) rotate(-6deg); }
@@ -91,5 +112,5 @@
     transform: translate(-50%, 0);
   }
   .nav-bitty-link .nav-bitty { animation: none !important; }
-  .nav-bitty-github .nav-bitty-stage { transform: translate(0, -50%); }
+  .nav-bitty-github .nav-bitty-stage { transform: translate(0, -42%); }
 }

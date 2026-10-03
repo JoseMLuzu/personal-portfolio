@@ -53,11 +53,11 @@ export const Navbar = () => {
             <span className="nav-bitty-stage" aria-hidden="true">
               <img
                 className="nav-bitty"
-                src="/assets/bitty-nav-github-kiss.png"
+                src="/assets/bitty-nav-github-awe.png"
                 alt=""
                 aria-hidden="true"
-                width="1212"
-                height="1298"
+                width="1024"
+                height="1536"
               />
             </span>
           </a>

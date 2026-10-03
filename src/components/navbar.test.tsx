@@ -5,14 +5,14 @@ import { Navbar } from './navbar'
 describe('navbar Bitty poses', () => {
   afterEach(() => vi.unstubAllEnvs())
 
-  it('adds the kiss pose to the configured GitHub link without changing its accessible name', () => {
+  it('adds the admiring pose to the configured GitHub link without changing its accessible name', () => {
     vi.stubEnv('VITE_GITHUB_URL', 'https://github.com/JoseMLuzu')
     render(<Navbar />)
     const github = screen.getByRole('link', { name: 'José Manuel’s GitHub (opens in a new tab)' })
     expect(github).toHaveAttribute('href', 'https://github.com/JoseMLuzu')
     expect(github).toHaveAttribute('rel', 'noopener noreferrer')
     expect(github).toHaveClass('nav-bitty-github')
-    expect(github.querySelector('img')).toHaveAttribute('src', '/assets/bitty-nav-github-kiss.png')
+    expect(github.querySelector('img')).toHaveAttribute('src', '/assets/bitty-nav-github-awe.png')
     expect(github.querySelector('img')).toHaveAttribute('alt', '')
     expect(github.querySelector('.nav-bitty-stage')).toHaveAttribute('aria-hidden', 'true')
   })
