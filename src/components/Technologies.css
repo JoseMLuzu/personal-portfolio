@@ -1,7 +1,7 @@
 .technologies { position: relative; isolation: isolate; overflow: hidden; background: #ffd69a url('/assets/stack-beach-sand.png') center / 100% 100% no-repeat; color: #102943; padding: clamp(3rem, 5vw, 4.5rem) clamp(1.25rem, 8vw, 7rem) 6rem; scroll-margin-top: 2rem; }
 .technologies-inner { position: relative; z-index: 2; max-width: 1200px; margin: auto; pointer-events: none; }
 .technologies-header, .technology-grid { pointer-events: auto; }
-.technologies-header { display: grid; gap: 1.25rem; margin-bottom: 7rem; }
+.technologies-header { display: grid; gap: 1.25rem; margin-bottom: clamp(3rem, 5vw, 4.5rem); }
 .technologies .eyebrow { color: #395a70; letter-spacing: .1em; }
 .technologies h2 { margin: 0; font-size: clamp(2.5rem, 5.5vw, 4.75rem); line-height: 1.08; letter-spacing: -.055em; }
 .technology-title-mark { position: relative; display: inline-block; }
@@ -16,16 +16,14 @@
 .technology-motion-note { color: #31495b; font-size: .875rem; }
 .technology-source-link:focus-visible { outline: 2px solid #12384e; outline-offset: 4px; }
 .technology-source-link { font: .875rem/1.5 ui-monospace, monospace; color: #12384e; }
-.technology-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem 2rem; border-bottom: 1px solid #18384e44; padding-bottom: 2rem; padding-right: 88px; }
+.technology-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 3rem clamp(1.5rem, 3vw, 2.75rem); border-bottom: 1px solid #18384e44; padding-bottom: 2rem; }
 .technology-group { min-width: 0; }
-.technology-group:nth-child(2) { padding-top: .75rem; }
-.technology-group:nth-child(3) { padding-top: 1.5rem; }
-.technology-group > header { margin-bottom: 1rem; }
+.technology-group > header { min-height: 7rem; margin-bottom: .75rem; }
 .technology-number { display: block; color: #365a70; font: .75rem/1.5 ui-monospace, monospace; margin-bottom: .5rem; }
 .technology-group h3 { margin: 0; font-size: clamp(1.5rem, 2.4vw, 2rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.15; }
 .technology-group ul { margin: 0; padding: 0; list-style: none; }
-.technology-group li { padding: .4rem 0; }
-.technology-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+.technology-group li { padding: .5rem 0; }
+.technology-row { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem 1rem; min-height: 2.75rem; }
 .technology-name { position: relative; display: inline-block; padding: .25rem 0; text-align: left; border: 0; background: none; cursor: pointer; color: #142c45; font: 500 clamp(1.0625rem, 1.6vw, 1.45rem)/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; transform-origin: center bottom; }
 .technology-name { transition: color 180ms ease, text-shadow 240ms ease; }
 .technology-name:hover, .technology-name:focus-visible, .technology-selected .technology-name { color: #071827; text-decoration: underline; text-underline-offset: .25em; }
@@ -64,14 +62,14 @@
 .tide-splash { position: absolute; left: 5%; bottom: 10%; width: 5px; height: 5px; background: #a8f6ff; opacity: 0; }
 .tide-splash:nth-of-type(3) { width: 3px; height: 3px; background: #43cbed; }
 .bitty-hidden .tide-actor, .bitty-hidden .tide-whale, .bitty-hidden .tide-caption, .bitty-hidden .technology-reaction-sprite { display: none; }
-@media (max-width: 1000px) { .technology-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .technology-group:nth-child(3) { padding-top: 0; } }
+@media (max-width: 1100px) { .technology-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-right: 72px; } }
 @media (max-width: 600px) {
   .technologies { padding-bottom: 5rem; }
-  .technologies-header { gap: 1rem; margin-bottom: 5.5rem; }
+  .technologies-header { gap: 1rem; margin-bottom: 3rem; }
   .technology-header-footer { gap: .75rem; }
-  .technology-grid { grid-template-columns: 1fr; gap: 1.75rem; padding-right: 64px; }
+  .technology-grid { grid-template-columns: 1fr; gap: 2.5rem; padding-right: 64px; }
   .technology-reaction-sprite { right: 14px; width: 64px; height: 96px; }
-  .technology-group:nth-child(2) { padding-top: 0; }
+  .technology-group > header { min-height: 0; margin-bottom: 1rem; }
   .technology-group h3 { font-size: 1.65rem; }
   .technology-name { font-size: 1.125rem; }
   .technology-tide { --whale-width: 128px; height: 140px; }

@@ -39,7 +39,7 @@ export function Technologies() {
       <div className="technology-grid">
         {technologyGroups.map((group, index) => <article className="technology-group" key={group.id} aria-labelledby={`technology-${group.id}`}>
           <header>
-            {index < 3 && <span className="technology-number" aria-hidden="true">0{index + 1}</span>}
+            <span className="technology-number" aria-hidden="true">0{index + 1}</span>
             <h3 className="tide-word" id={`technology-${group.id}`}>{group.title}</h3>
           </header>
           <ul>
