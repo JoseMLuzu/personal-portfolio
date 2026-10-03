@@ -113,9 +113,9 @@ export function BittyScene({ onPhaseChange }: { onPhaseChange?: (phase: HeroPhas
         <span className="hero-loose-letter hero-letter-i">i</span><span className="hero-loose-letter hero-letter-first-a">a</span>
         <span className="hero-loose-letter hero-letter-g">g</span><span className="hero-loose-letter hero-letter-a">a</span>
         <span className="hero-curtains"><span className="hero-curtain" /></span>
-        <span className="hero-actor"><span className="hero-bitty-sprite" /><span className="hero-bitty-speech">Estaba así cuando llegué.</span></span>
+        <span className="hero-actor"><span className="hero-bitty-sprite" /><span className="hero-bitty-speech">It was like that when I got here.</span></span>
       </span></span>
     </h1>
-    <button className="hero-replay" type="button" data-hero-replay onClick={play} aria-label="Repetir la escena de Bitty">↻ Repetir escena</button>
+    <button className="hero-replay" type="button" data-hero-replay onClick={play} aria-label="Replay Bitty’s scene">↻ Replay scene</button>
   </div>
 }

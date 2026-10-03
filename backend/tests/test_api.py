@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 
 from fastapi.testclient import TestClient
 
@@ -29,7 +29,7 @@ def test_openrouter_error_uses_fallback(monkeypatch):
     body = response.json()
     assert body["source"] == "fallback"
     assert body["project"]["slug"] == "hostiqr"
-    assert "confirmar" in body["text"]
+    assert "Still to confirm" in body["text"]
 
 
 def test_successful_openrouter_response_keeps_action_server_controlled(monkeypatch):
@@ -48,3 +48,32 @@ def test_rejects_oversized_input():
     client = TestClient(main.create_app())
     response = client.post("/api/bitty/message", json={"message": "x" * 601})
     assert response.status_code == 422
+
+
+def test_english_questions_select_context_and_navigation(monkeypatch):
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+    client = TestClient(main.create_app())
+    response = client.post("/api/bitty/message", json={"message": "Show me your projects"})
+    assert response.json()["action"]["type"] == "scroll_projects"
+    assert "web developer" in response.json()["text"]
+    finance = client.post("/api/bitty/message", json={"message": "Tell me about financial tracking"})
+    assert finance.json()["project"]["slug"] == "fintrack"
+    assert "without a confirmed public demo" in finance.json()["text"]
+
+
+def test_openrouter_prompt_requests_english(monkeypatch):
+    monkeypatch.setenv("OPENROUTER_API_KEY", "test-key")
+    response = main.httpx.Response(200, request=main.httpx.Request("POST", "https://example.test"),
+                                  json={"choices": [{"message": {"content": "Seeds captures ideas."}}]})
+    router = MagicMock()
+    router.post = AsyncMock(return_value=response)
+    context = MagicMock()
+    context.__aenter__ = AsyncMock(return_value=router)
+    context.__aexit__ = AsyncMock(return_value=None)
+    monkeypatch.setattr(main.httpx, "AsyncClient", lambda **kwargs: context)
+    client = TestClient(main.create_app())
+    result = client.post("/api/bitty/message", json={"message": "What is Seeds?"})
+    assert result.json()["source"] == "ai"
+    prompt = router.post.call_args.kwargs["json"]["messages"][0]["content"]
+    assert "Always respond in English" in prompt
+    assert "Do not invent" in prompt

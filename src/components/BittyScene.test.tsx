@@ -38,7 +38,7 @@ describe('hero curtain scene', () => {
   it('keeps an accessible name and the project link available from the first frame', () => {
     const { container } = render(<Hero />)
     expect(screen.getByRole('heading', { name: 'José Manuel Luzuriaga' })).toBeVisible()
-    expect(screen.getByRole('link', { name: /ver proyectos/i })).toHaveAttribute('href', '#proyectos')
+    expect(screen.getByRole('link', { name: /see my work/i })).toHaveAttribute('href', '#proyectos')
     expect(container.querySelector('.hero-name-scene')).toHaveAttribute('data-phase', 'ready')
     expect(container.querySelector('.hero-surname')).toHaveAttribute('aria-hidden', 'true')
     expect(Array.from(container.querySelectorAll('.hero-loose-letter')).map(letter => letter.textContent).join('')).toBe('iaga')
@@ -51,7 +51,7 @@ describe('hero curtain scene', () => {
     expect(onPhaseChange).toHaveBeenLastCalledWith('fallen')
     act(() => vi.advanceTimersByTime(1250))
     expect(onPhaseChange).toHaveBeenLastCalledWith('noticing')
-    expect(screen.getByText('Estaba así cuando llegué.')).toBeInTheDocument()
+    expect(screen.getByText('It was like that when I got here.')).toBeInTheDocument()
     act(() => vi.advanceTimersByTime(1250))
     expect(onPhaseChange).toHaveBeenLastCalledWith('fetching')
     act(() => vi.advanceTimersByTime(2250))
@@ -74,8 +74,8 @@ describe('hero curtain scene', () => {
     const { container } = render(<BittyScene />)
     expect(shouldAutoplayIntro(sessionStorage, false)).toBe(false)
     expect(container.querySelector('.hero-name-scene')).toHaveAttribute('data-phase', 'done')
-    fireEvent.pointerDown(screen.getByRole('button', { name: /repetir la escena/i }))
-    fireEvent.click(screen.getByRole('button', { name: /repetir la escena/i }))
+    fireEvent.pointerDown(screen.getByRole('button', { name: /replay bitty’s scene/i }))
+    fireEvent.click(screen.getByRole('button', { name: /replay bitty’s scene/i }))
     act(() => vi.advanceTimersByTime(150))
     expect(container.querySelector('.hero-name-scene')).toHaveAttribute('data-phase', 'tipping')
   })
@@ -91,7 +91,7 @@ describe('hero curtain scene', () => {
 
   it('interrupts Tab from the replay control, without suppressing its keyboard activation', () => {
     const { container } = render(<Hero />)
-    const replay = screen.getByRole('button', { name: /repetir la escena/i })
+    const replay = screen.getByRole('button', { name: /replay bitty’s scene/i })
     fireEvent.click(replay)
     fireEvent.keyDown(replay, { key: 'Tab' })
     expect(container.querySelector('.hero-name-scene')).toHaveAttribute('data-phase', 'done')
@@ -104,7 +104,7 @@ describe('hero curtain scene', () => {
     reduced = true
     const { container } = render(<Hero />)
     expect(container.querySelector('.hero-name-scene')).toHaveAttribute('data-phase', 'done')
-    fireEvent.click(screen.getByRole('button', { name: /repetir la escena/i }))
+    fireEvent.click(screen.getByRole('button', { name: /replay bitty’s scene/i }))
     expect(container.querySelector('.hero-name-scene')).toHaveAttribute('data-phase', 'done')
   })
 

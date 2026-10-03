@@ -6,13 +6,13 @@ export const Navbar = () => {
   const githubUrl = import.meta.env.VITE_GITHUB_URL?.trim();
 
   return (
-    <nav className="nav nav-with-bitty" aria-label="Navegación principal">
+    <nav className="nav nav-with-bitty" aria-label="Main navigation">
       <a className="brand" href="#inicio">
         JML<span aria-hidden="true">_</span>
       </a>
       <div className="nav-links">
         <a className="nav-bitty-link nav-bitty-projects" href="#proyectos">
-          Proyectos
+          Projects
           <span className="nav-bitty-stage" aria-hidden="true">
             <img
               className="nav-bitty"
@@ -28,7 +28,7 @@ export const Navbar = () => {
           className="nav-about-link nav-bitty-link nav-bitty-about"
           href="#sobre-mi"
         >
-          Sobre mí
+          About me
           <span className="nav-bitty-stage" aria-hidden="true">
             <img
               className="nav-bitty"
@@ -47,7 +47,7 @@ export const Navbar = () => {
             href={githubUrl}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="GitHub de José Manuel (abre en una pestaña nueva)"
+            aria-label="José Manuel’s GitHub (opens in a new tab)"
           >
             <FaGithub aria-hidden="true" />
             <span className="nav-bitty-stage" aria-hidden="true">
@@ -64,8 +64,8 @@ export const Navbar = () => {
         ) : (
           <span
             className="github-link github-link--pending"
-            aria-label="GitHub: enlace pendiente de configurar"
-            title="Añade VITE_GITHUB_URL para activar este enlace"
+            aria-label="GitHub: link not configured yet"
+            title="Set VITE_GITHUB_URL to enable this link"
           >
             <FaGithub aria-hidden="true" />
           </span>

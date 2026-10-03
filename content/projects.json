@@ -3,39 +3,39 @@
     "slug": "seeds",
     "title": "Seeds",
     "url": "https://seed-rouge-eight.vercel.app",
-    "status": "Demo pública",
-    "summary": "Un espacio personal para capturar ideas, convertirlas en proyectos y mantener visibles los próximos pasos.",
-    "detail": "La demo pública muestra captura rápida, organización de ideas y proyectos, calendario y vistas para conectar y retomar el trabajo. La contribución personal y las decisiones técnicas todavía deben documentarse.",
+    "status": "Public demo",
+    "summary": "A personal space to capture ideas, turn them into projects and keep next steps in view.",
+    "detail": "The public demo shows quick capture, idea and project organization, a calendar, and views for connecting and resuming work. Personal contributions and technical decisions still need documentation.",
     "stack": ["Web app"],
     "result": null,
     "repositoryUrl": null,
     "caseStudy": { "problem": null, "contribution": null, "decisions": null },
-    "needsReview": ["Problema original", "Contribución personal", "Stack confirmado", "Resultado"]
+    "needsReview": ["Original problem", "Personal contribution", "Confirmed stack", "Result"]
   },
   {
     "slug": "hostiqr",
     "title": "HostiQR",
     "url": "https://hostiqr.vercel.app",
-    "status": "Demo pública",
-    "summary": "Una recepción digital en QR para alojamientos, con un panel privado para gestionar la experiencia.",
-    "detail": "La propuesta y el acceso al panel están visibles en la demo pública. El flujo concreto para huéspedes, la contribución personal, las decisiones técnicas y los resultados todavía deben documentarse.",
+    "status": "Public demo",
+    "summary": "A QR-based digital reception for accommodations, with a private dashboard to manage the experience.",
+    "detail": "The concept and dashboard access are visible in the public demo. The guest flow, personal contributions, technical decisions and results still need documentation.",
     "stack": ["Web app"],
     "result": null,
     "repositoryUrl": null,
     "caseStudy": { "problem": null, "contribution": null, "decisions": null },
-    "needsReview": ["Problema original", "Usuarios", "Contribución personal", "Stack confirmado", "Resultado"]
+    "needsReview": ["Original problem", "Users", "Personal contribution", "Confirmed stack", "Result"]
   },
   {
     "slug": "fintrack",
     "title": "FinTrack",
     "url": null,
-    "status": "Caso por documentar",
-    "summary": "Proyecto de seguimiento financiero incluido como trabajo en proceso, sin una demo pública confirmada.",
-    "detail": "La ficha queda preparada para ampliar el problema, la contribución personal, las decisiones técnicas y el resultado sin inventar datos.",
+    "status": "Case study pending",
+    "summary": "A financial tracking project presented as work in progress, without a confirmed public demo.",
+    "detail": "This case study is ready to expand with the problem, personal contributions, technical decisions and results, without inventing facts.",
     "stack": [],
     "result": null,
     "repositoryUrl": null,
     "caseStudy": { "problem": null, "contribution": null, "decisions": null },
-    "needsReview": ["Descripción", "Estado actual", "Contribución personal", "Stack", "Resultado", "Enlace de demo"]
+    "needsReview": ["Description", "Current status", "Personal contribution", "Stack", "Result", "Demo link"]
   }
 ]

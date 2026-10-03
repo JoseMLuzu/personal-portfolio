@@ -36,7 +36,7 @@ export function BittyChat() {
   useEffect(() => {
     const arrive = () => {
       setTideArrived(true)
-      setReaction('He aparcado la ballena. Ahora seguimos a pie.')
+      setReaction('I parked the whale. We’re walking from here.')
     }
     window.addEventListener(TIDE_ARRIVED_EVENT, arrive)
     const board = () => setTideArrived(false)
@@ -101,63 +101,63 @@ export function BittyChat() {
 
   return (
     <><div ref={boundsRef} className="clippy-bounds" aria-hidden="true" />
-    <motion.aside ref={shellRef} className={`bitty-chat clippy-assistant${(stop === 'inicio' || (stop === 'tecnologias' && !tideArrived)) && !open ? ' hero-companion-docked' : ''}${tideArrived && stop === 'tecnologias' && !open ? ' tide-companion-arrived' : ''}${open ? ' is-open' : ''}${skyCompact ? ' sky-guide-compact' : ''}${guide?.hidden ? ' guide-hidden' : ''}`} aria-label="Guía y preguntas de Bitty" drag dragListener={false} dragControls={dragControls} dragConstraints={boundsRef} dragElastic={0} dragMomentum={false} onDragStart={() => setReaction('¡Mis pies no tienen ruedas!')} onDragEnd={() => setReaction('Nueva oficina. Mismo sueldo: cero.')} style={{ x: assistantX, y: assistantY }}>
-      {guide?.hidden ? <button className="restore-bitty" type="button" onClick={() => guide.setHidden(false)}>Mostrar a Bitty</button> : <>
+    <motion.aside ref={shellRef} className={`bitty-chat clippy-assistant${(stop === 'inicio' || (stop === 'tecnologias' && !tideArrived)) && !open ? ' hero-companion-docked' : ''}${tideArrived && stop === 'tecnologias' && !open ? ' tide-companion-arrived' : ''}${open ? ' is-open' : ''}${skyCompact ? ' sky-guide-compact' : ''}${guide?.hidden ? ' guide-hidden' : ''}`} aria-label="Bitty’s guide and questions" drag dragListener={false} dragControls={dragControls} dragConstraints={boundsRef} dragElastic={0} dragMomentum={false} onDragStart={() => setReaction('My feet don’t have wheels!')} onDragEnd={() => setReaction('New office. Same salary: zero.')} style={{ x: assistantX, y: assistantY }}>
+      {guide?.hidden ? <button className="restore-bitty" type="button" onClick={() => guide.setHidden(false)}>Show Bitty</button> : <>
       {showTip && !open && <motion.div key={tipKey} className="guide-teaser clippy-balloon" initial={{ opacity: 0, y: reduced ? 0 : 8 }} animate={{ opacity: 1, y: 0 }}>
-        <button className="dismiss-tip" type="button" aria-label="Descartar sugerencia de Bitty" onClick={() => setDismissedTips((tips) => [...tips, tipKey])}>×</button>
-        <span>{guide?.guided ? copy.title : 'Parece que buscas a un desarrollador…'}</span>
-        <p>{reaction ?? (guide?.guided ? '¿Te echo una mano? Esta vez sin caerme.' : '¿Quieres ver proyectos o descubrir el código detrás de mis piruetas?')}</p>
-        <div><button type="button" onClick={() => setOpen(true)}>Ayúdame a explorar</button><button type="button" onClick={() => navigate('laboratorio-bitty')}>Muéstrame el código</button></div>
+        <button className="dismiss-tip" type="button" aria-label="Dismiss Bitty’s suggestion" onClick={() => setDismissedTips((tips) => [...tips, tipKey])}>×</button>
+        <span>{guide?.guided ? copy.title : 'Looks like you’re looking for a developer…'}</span>
+        <p>{reaction ?? (guide?.guided ? 'Need a hand? No falling this time.' : 'Want to see the projects or explore the code behind my acrobatics?')}</p>
+        <div><button type="button" onClick={() => setOpen(true)}>Help me explore</button><button type="button" onClick={() => navigate('laboratorio-bitty')}>Show me the code</button></div>
       </motion.div>}
       <AnimatePresence>
       {open && (
         <motion.div key="bitty-panel" className="chat-panel" id="bitty-panel" initial={{ opacity: 0, y: reduced ? 0 : 16, scale: reduced ? 1 : 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: reduced ? 0 : 8 }} transition={{ duration: reduced ? 0 : 0.2 }}>
-          <div className="chat-heading"><strong>Bitty.exe <small>asistente (casi) profesional</small></strong><button type="button" onClick={() => { setOpen(false); toggleRef.current?.focus() }} aria-label="Cerrar panel de Bitty">×</button></div>
+          <div className="chat-heading"><strong>Bitty.exe <small>(almost) professional assistant</small></strong><button type="button" onClick={() => { setOpen(false); toggleRef.current?.focus() }} aria-label="Close Bitty’s panel">×</button></div>
           <div className="guide-settings">
-            <button type="button" aria-pressed={guide?.guided ?? false} onClick={() => guide?.setGuided(!guide.guided)}>Modo guía {guide?.guided ? 'activo' : 'desactivado'}</button>
-            <button type="button" onClick={() => { guide?.setHidden(true); setOpen(false) }}>Ocultar a Bitty</button>
+            <button type="button" aria-pressed={guide?.guided ?? false} onClick={() => guide?.setGuided(!guide.guided)}>Guide mode {guide?.guided ? 'on' : 'off'}</button>
+            <button type="button" onClick={() => { guide?.setHidden(true); setOpen(false) }}>Hide Bitty</button>
           </div>
           <motion.div key={stop} className="guide-context" initial={{ opacity: 0, x: reduced ? 0 : 10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: reduced ? 0 : 0.2 }}>
             <p className="guide-location">{copy.title}</p><p>{copy.text}</p>
             <div className="guide-actions">
               {currentProject ? <>
-                <button type="button" onClick={() => guide?.showProject(currentProject.slug)}>Ver caso y decisiones →</button>
-                {currentProject.url && <a href={currentProject.url} target="_blank" rel="noreferrer">Abrir demo ↗</a>}
-                <button type="button" onClick={() => navigate(stop === 'seeds' ? 'project-hostiqr' : stop === 'hostiqr' ? 'project-fintrack' : 'sobre-mi')}>Siguiente parada →</button>
+                <button type="button" onClick={() => guide?.showProject(currentProject.slug)}>View case study and decisions →</button>
+                {currentProject.url && <a href={currentProject.url} target="_blank" rel="noreferrer">Open demo ↗</a>}
+                <button type="button" onClick={() => navigate(stop === 'seeds' ? 'project-hostiqr' : stop === 'hostiqr' ? 'project-fintrack' : 'sobre-mi')}>Next stop →</button>
               </> : stop === 'sobre-mi' ? <>
-                <button type="button" onClick={() => navigate('criterio-tecnico')}>Explícame las decisiones →</button>
-                <a href="https://github.com/JoseMLuzu/personal-portfolio" target="_blank" rel="noreferrer">Código del portafolio ↗</a>
+                <button type="button" onClick={() => navigate('criterio-tecnico')}>Explain the decisions →</button>
+                <a href="https://github.com/JoseMLuzu/personal-portfolio" target="_blank" rel="noreferrer">Portfolio source ↗</a>
               </> : <>
-                <button type="button" onClick={() => guide?.showProject('seeds')}>Muéstrame el trabajo →</button>
-                <button type="button" onClick={() => navigate('sobre-mi')}>Conocer a José →</button>
+                <button type="button" onClick={() => guide?.showProject('seeds')}>Show me the work →</button>
+                <button type="button" onClick={() => navigate('sobre-mi')}>Meet José →</button>
               </>}
-              <button type="button" onClick={() => setShowSeed((value) => !value)} aria-expanded={showSeed}>Quiero anotar una idea</button>
-              <button type="button" onClick={() => { navigate('laboratorio-bitty'); setOpen(false) }}>Muéstrame cómo estás programado</button>
+              <button type="button" onClick={() => setShowSeed((value) => !value)} aria-expanded={showSeed}>I want to save an idea</button>
+              <button type="button" onClick={() => { navigate('laboratorio-bitty'); setOpen(false) }}>Show me how you’re programmed</button>
             </div>
           </motion.div>
           <AnimatePresence>{showSeed && <motion.div className="guide-seed-card" initial={{ opacity: 0, y: reduced ? 0 : 12, rotate: reduced ? 0 : -3 }} animate={{ opacity: 1, y: 0, rotate: 0 }} exit={{ opacity: 0 }}>
-            <small>De la carpeta de Bitty</small><strong>Seeds</strong><p>{getProject('seeds')?.summary}</p>
-            <div className="guide-actions"><button type="button" onClick={() => guide?.showProject('seeds')}>Abrir ficha</button><a href={getProject('seeds')?.url ?? undefined} target="_blank" rel="noreferrer">Visitar aplicación ↗</a></div>
+            <small>From Bitty’s folder</small><strong>Seeds</strong><p>{getProject('seeds')?.summary}</p>
+            <div className="guide-actions"><button type="button" onClick={() => guide?.showProject('seeds')}>Open case study</button><a href={getProject('seeds')?.url ?? undefined} target="_blank" rel="noreferrer">Visit app ↗</a></div>
           </motion.div>}</AnimatePresence>
           {reply && (
             <div className="reply" aria-live="polite">
               <p>{reply.text}</p>
-              {reply.action.type !== 'none' && <button type="button" onClick={runAction}>Ver en la página →</button>}
-              <small>{reply.source === 'ai' ? 'Respuesta con IA' : 'Respuesta local'}</small>
+              {reply.action.type !== 'none' && <button type="button" onClick={runAction}>See on the page →</button>}
+              <small>{reply.source === 'ai' ? 'AI reply' : 'Local reply'}</small>
             </div>
           )}
           <form onSubmit={submit}>
-            <label htmlFor="bitty-message">Tu pregunta</label>
+            <label htmlFor="bitty-message">Your question</label>
             <div>
               <input
                 id="bitty-message"
                 value={message}
                 maxLength={600}
                 onChange={(event) => setMessage(event.target.value)}
-                placeholder="¿Qué sabes de Seeds?"
+                placeholder="What do you know about Seeds?"
                 autoComplete="off"
               />
-              <button type="submit" disabled={loading || !message.trim()} aria-label="Enviar pregunta">
+              <button type="submit" disabled={loading || !message.trim()} aria-label="Send question">
                 {loading ? '···' : '↗'}
               </button>
             </div>
@@ -166,7 +166,7 @@ export function BittyChat() {
       )}
       </AnimatePresence>
       <div className="clippy-position-controls">
-        <button type="button" className="clippy-grab" aria-label="Mover Bitty; usa las flechas del teclado" title="Arrastra con el mouse o usa las flechas del teclado" onPointerDown={(event) => { if (event.pointerType !== 'touch') dragControls.start(event) }} onKeyDown={(event) => {
+        <button type="button" className="clippy-grab" aria-label="Move Bitty; use the arrow keys" title="Drag with the mouse or use the arrow keys" onPointerDown={(event) => { if (event.pointerType !== 'touch') dragControls.start(event) }} onKeyDown={(event) => {
           const shifts: Record<string, [number, number]> = { ArrowLeft: [-24, 0], ArrowRight: [24, 0], ArrowUp: [0, -24], ArrowDown: [0, 24] }
           const shift = shifts[event.key]
           const rect = shellRef.current?.getBoundingClientRect()
@@ -174,12 +174,12 @@ export function BittyChat() {
           event.preventDefault()
           assistantX.set(assistantX.get() + Math.max(12 - rect.left, Math.min(window.innerWidth - 12 - rect.right, shift[0])))
           assistantY.set(assistantY.get() + Math.max(12 - rect.top, Math.min(window.innerHeight - 12 - rect.bottom, shift[1])))
-        }}>⠿ Mover</button>
-        <button type="button" onClick={() => { assistantX.set(0); assistantY.set(0) }} aria-label="Devolver Bitty a su sitio">↺</button>
+        }}>⠿ Move</button>
+        <button type="button" onClick={() => { assistantX.set(0); assistantY.set(0) }} aria-label="Reset Bitty’s position">↺</button>
       </div>
-      <button ref={toggleRef} className="chat-toggle" type="button" aria-expanded={open} aria-controls="bitty-panel" aria-label={open ? 'Cerrar guía de Bitty' : 'Abrir guía y preguntas de Bitty'} onClick={() => setOpen(!open)}>
+      <button ref={toggleRef} className="chat-toggle" type="button" aria-expanded={open} aria-controls="bitty-panel" aria-label={open ? 'Close Bitty’s guide' : 'Open Bitty’s guide and questions'} onClick={() => setOpen(!open)}>
         <motion.span key={stop} className={`chat-bitty-sprite guide-pose-${stop}`} aria-hidden="true" initial={{ y: reduced ? 0 : -10, rotate: reduced ? 0 : -12 }} animate={{ y: 0, rotate: 0 }} transition={reduced ? { duration: 0 } : { type: 'spring', stiffness: 220, damping: 14 }} />
-        <span>{open ? 'Cerrar' : 'Bitty · ¿te ayudo?'}</span>
+        <span>{open ? 'Close' : 'Bitty · need a hand?'}</span>
       </button>
       </>}
     </motion.aside></>

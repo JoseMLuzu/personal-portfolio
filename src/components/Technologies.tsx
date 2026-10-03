@@ -16,23 +16,23 @@ export function Technologies() {
   }
   const start = () => { setActiveTechnology(null); setReactionTop(null); tide.start() }
   const pose = playing ? 'normal' : activeTechnology?.pose ?? 'normal'
-  const message = playing ? 'Era una ola pequeña. Puedes saltar la escena.' : activeTechnology?.usage ??
-    (hasPlayed ? 'Docker lo tenía bajo control. Más o menos.' : 'Solo iba a mojarme los pies.')
+  const message = playing ? 'It was a small wave. You can skip the scene.' : activeTechnology?.usage ??
+    (hasPlayed ? 'Docker had it under control. More or less.' : 'I was only going to dip my toes in.')
 
   return <section ref={sectionRef} className={`technologies technologies-beach tide-${phase}${playing ? ' tide-playing' : ''}${reactionTop !== null ? ' technology-reacting' : ''}`} data-tide-phase={phase} data-active-technology={activeTechnology?.name ?? ''} id="tecnologias" aria-labelledby="technologies-title">
     <div className="technologies-inner">
       <header className="technologies-header">
         <div>
-          <p className="eyebrow">// Mi stack</p>
-          <h2 id="technologies-title">Con qué <span className="technology-title-mark">construyo</span>.</h2>
+          <p className="eyebrow">// My stack</p>
+          <h2 id="technologies-title">Tools I <span className="technology-title-mark">build with.</span></h2>
         </div>
         <div className="technology-header-footer">
           <div className="technology-controls">
-            <button className="technology-replay technology-start" type="button" onClick={start} disabled={!ready} aria-disabled={playing}>{hasPlayed ? '↻ Repetir' : '≈ Ver la ola'}</button>
-            {playing && <button className="technology-replay technology-skip" type="button" onClick={tide.skip}>Saltar</button>}
+            <button className="technology-replay technology-start" type="button" onClick={start} disabled={!ready} aria-disabled={playing}>{hasPlayed ? '↻ Replay' : '≈ Watch the wave'}</button>
+            {playing && <button className="technology-replay technology-skip" type="button" onClick={tide.skip}>Skip</button>}
           </div>
-          {reducedMotion && <span className="technology-motion-note">Movimiento reducido: sin inundación animada.</span>}
-          {assetError && <span className="technology-motion-note">La escena no está disponible. Puedes explorar todas las tecnologías.</span>}
+          {reducedMotion && <span className="technology-motion-note">Reduced motion: no animated flooding.</span>}
+          {assetError && <span className="technology-motion-note">The scene is unavailable. You can still explore every technology.</span>}
         </div>
         <p className="technology-context" role="status" aria-live="polite">{message}</p>
       </header>
@@ -52,8 +52,8 @@ export function Technologies() {
                     onPointerEnter={event => reactTo(item, event.currentTarget)} onPointerLeave={event => { if (event.pointerType !== 'touch' && document.activeElement !== event.currentTarget) reactTo(null) }} onFocus={event => reactTo(item, event.currentTarget)} onBlur={() => reactTo(null)} onClick={event => reactTo(item, event.currentTarget)} onKeyDown={event => { if (event.key === 'Escape') reactTo(null) }}>
                     {item.name}
                   </button>
-                  <span className="technology-context">{item.context === 'experience' ? 'Experiencia' : 'Este portafolio'}</span>
-                  {item.href && <a className="technology-source-link" href={item.href} target="_blank" rel="noopener noreferrer" aria-label={`Ver repositorio en ${item.name} (pestaña nueva)`}>Ver repo ↗</a>}
+                  <span className="technology-context">{item.context === 'experience' ? 'Experience' : 'This portfolio'}</span>
+                  {item.href && <a className="technology-source-link" href={item.href} target="_blank" rel="noopener noreferrer" aria-label={`View ${item.name} repository (new tab)`}>View repo ↗</a>}
                 </div>
                 <span className="technology-context" id={descriptionId}>{item.usage}</span>
               </li>
@@ -77,8 +77,8 @@ export function Technologies() {
         <img className="tide-pose-oops" src="/assets/bitty-tap-oops.png" alt="" width="1024" height="1536" />
         <img className="tide-pose-swept" src="/assets/bitty-swept-left.png" alt="" width="1536" height="1024" />
       </div>
-      <span className="tide-caption tide-caption-control" aria-hidden="true">Yo controlo—</span>
-      <span className="tide-caption tide-caption-transport" aria-hidden="true">Conseguí transporte.</span>
+      <span className="tide-caption tide-caption-control" aria-hidden="true">I’ve got thi—</span>
+      <span className="tide-caption tide-caption-transport" aria-hidden="true">Found a ride.</span>
       <div className="tide-whale" aria-hidden="true">
         <span className="tide-wake" />
         <span className="tide-splash" /><span className="tide-splash" /><span className="tide-splash" />

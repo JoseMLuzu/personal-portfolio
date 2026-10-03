@@ -8,7 +8,7 @@ describe('navbar Bitty poses', () => {
   it('adds the kiss pose to the configured GitHub link without changing its accessible name', () => {
     vi.stubEnv('VITE_GITHUB_URL', 'https://github.com/JoseMLuzu')
     render(<Navbar />)
-    const github = screen.getByRole('link', { name: 'GitHub de José Manuel (abre en una pestaña nueva)' })
+    const github = screen.getByRole('link', { name: 'José Manuel’s GitHub (opens in a new tab)' })
     expect(github).toHaveAttribute('href', 'https://github.com/JoseMLuzu')
     expect(github).toHaveAttribute('rel', 'noopener noreferrer')
     expect(github).toHaveClass('nav-bitty-github')
@@ -19,8 +19,8 @@ describe('navbar Bitty poses', () => {
 
   it('preserves accessible links with the requested decorative poses', () => {
     render(<Navbar />)
-    const projects = screen.getByRole('link', { name: 'Proyectos' })
-    const about = screen.getByRole('link', { name: 'Sobre mí' })
+    const projects = screen.getByRole('link', { name: 'Projects' })
+    const about = screen.getByRole('link', { name: 'About me' })
     expect(projects).toHaveAttribute('href', '#proyectos')
     expect(about).toHaveAttribute('href', '#sobre-mi')
     expect(projects.querySelector('img')).toHaveAttribute('src', '/assets/bitty-nav-climb.png')

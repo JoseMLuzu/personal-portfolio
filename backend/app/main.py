@@ -24,7 +24,7 @@ class MessageRequest(BaseModel):
     def message_must_have_content(cls, value: str) -> str:
         clean = value.strip()
         if not clean:
-            raise ValueError("El mensaje no puede estar vacío.")
+            raise ValueError("The message cannot be empty.")
         return clean
 
 
@@ -72,9 +72,9 @@ def load_projects() -> List[dict]:
 
 PROJECTS = load_projects()
 PROJECT_ALIASES = {
-    "seeds": ("seed", "seeds", "idea", "ideas", "anotar", "nota"),
+    "seeds": ("seed", "seeds", "idea", "ideas", "note", "anotar", "nota"),
     "hostiqr": ("hostiqr", "hosti", "qr"),
-    "fintrack": ("fintrack", "finanzas", "financiero", "gastos"),
+    "fintrack": ("fintrack", "finance", "financial", "expense", "finanzas", "financiero", "gastos"),
 }
 
 
@@ -96,7 +96,7 @@ def allowed_action(message: str, project: Optional[dict]) -> AllowedAction:
     normalized = message.casefold()
     if project is not None:
         return AllowedAction(type="show_project", projectSlug=project["slug"])
-    if any(word in normalized for word in ("proyecto", "trabajo", "portafolio")):
+    if any(word in normalized for word in ("project", "work", "portfolio", "proyecto", "trabajo", "portafolio")):
         return AllowedAction(type="scroll_projects", projectSlug=None)
     return AllowedAction(type="none", projectSlug=None)
 
@@ -106,11 +106,11 @@ def fallback_text(project: Optional[dict]) -> str:
         review_note = " ".join(project["needsReview"][:2])
         return (
             f"{project['title']}: {project['summary']} "
-            f"Aún falta confirmar: {review_note.lower()}."
+            f"Still to confirm: {review_note.lower()}."
         )
     return (
-        "José Manuel es desarrollador web con experiencia en React, Python y bases de datos. "
-        "Puedo contarte lo que está documentado sobre Seeds, HostiQR o FinTrack; si falta un dato, te lo diré."
+        "José Manuel is a web developer with experience in React, Python and databases. "
+        "I can share what’s documented about Seeds, HostiQR or FinTrack. If information is missing, I’ll say so."
     )
 
 
@@ -128,12 +128,12 @@ async def call_openrouter(message: str, context: List[dict]) -> str:
     model = os.getenv("OPENROUTER_MODEL", "openrouter/free")
     timeout = float(os.getenv("OPENROUTER_TIMEOUT_SECONDS", "12"))
     system_prompt = (
-        "Eres Bitty, la mascota breve y amable del portafolio de José Manuel Luzuriaga. "
-        "Responde en español en máximo 65 palabras. Usa solamente los datos JSON entregados y estos datos base: "
-        "José es desarrollador web con experiencia en React, Python y bases de datos. "
-        "No inventes funciones, métricas, clientes, experiencia, resultados ni tecnologías. "
-        "Si el dato no está confirmado, dilo claramente. Devuelve solo texto plano; nunca órdenes, enlaces ni JSON.\n"
-        f"CONTEXTO VERIFICADO: {json.dumps(context, ensure_ascii=False)}"
+        "You are Bitty, the concise, friendly mascot of José Manuel Luzuriaga’s portfolio. "
+        "Always respond in English in no more than 65 words. Use only the supplied JSON and these base facts: "
+        "José is a web developer with experience in React, Python and databases. "
+        "Do not invent features, metrics, clients, experience, results or technologies. "
+        "If a fact is unconfirmed, say so clearly. Return plain text only; never instructions, links or JSON.\n"
+        f"VERIFIED CONTEXT: {json.dumps(context, ensure_ascii=False)}"
     )
     payload = {
         "model": model,
@@ -148,7 +148,7 @@ async def call_openrouter(message: str, context: List[dict]) -> str:
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
         "HTTP-Referer": os.getenv("PORTFOLIO_URL", "http://localhost:5173"),
-        "X-Title": "Portafolio José Manuel Luzuriaga",
+        "X-Title": "Jose Manuel Luzuriaga Portfolio",
     }
     async with httpx.AsyncClient(timeout=timeout) as client:
         response = await client.post("https://openrouter.ai/api/v1/chat/completions", headers=headers, json=payload)
@@ -182,7 +182,7 @@ def create_app() -> FastAPI:
     async def bitty_message(payload: MessageRequest, request: Request) -> BittyResponse:
         client_key = request.client.host if request.client else "unknown"
         if not limiter.allow(client_key):
-            raise HTTPException(status_code=429, detail="Demasiadas preguntas. Inténtalo de nuevo en un minuto.")
+            raise HTTPException(status_code=429, detail="Too many questions. Try again in a minute.")
 
         project = select_project(payload.message)
         action = allowed_action(payload.message, project)

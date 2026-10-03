@@ -26,13 +26,13 @@ export function BittyCodeLab() {
   }
 
   return <section className="bitty-code-lab" id="laboratorio-bitty" aria-labelledby="lab-title">
-    <p className="eyebrow">Bitty abre el capó</p>
-    <h3 id="lab-title">La personalidad también se programa.</h3>
-    <p>«Sí, tengo resortes en los ojos. No preguntes quién autorizó eso.» Prueba cómo el código cambia mi comportamiento.</p>
+    <p className="eyebrow">Bitty lifts the hood</p>
+    <h3 id="lab-title">Personality is programmed, too.</h3>
+    <p>“Yes, my eyes have springs. Don’t ask who approved that.” Try changing how I behave with code.</p>
     <div className="lab-grid">
       <article>
-        <h4>01 / Dale carácter a mi mirada</h4>
-        <p>Mueve el cursor sobre mí o usa los botones. Una rigidez baja da una mirada suave; poca amortiguación produce más rebote.</p>
+        <h4>01 / Give my gaze some character</h4>
+        <p>Move the cursor over me or use the buttons. Lower stiffness makes my gaze softer; less damping adds bounce.</p>
         <div className="lab-eye-demo" onPointerMove={(event) => {
           if (event.pointerType === 'touch') return
           const bounds = event.currentTarget.getBoundingClientRect()
@@ -43,22 +43,22 @@ export function BittyCodeLab() {
           </div>
         </div>
         <div className="lab-controls">
-          <label htmlFor="eye-stiffness">Rigidez <output>{stiffness}</output></label>
+          <label htmlFor="eye-stiffness">Stiffness <output>{stiffness}</output></label>
           <input id="eye-stiffness" type="range" min="60" max="600" step="20" value={stiffness} onChange={(event) => setStiffness(Number(event.target.value))} />
-          <label htmlFor="eye-damping">Amortiguación <output>{damping}</output></label>
+          <label htmlFor="eye-damping">Damping <output>{damping}</output></label>
           <input id="eye-damping" type="range" min="8" max="40" value={damping} onChange={(event) => setDamping(Number(event.target.value))} />
-          <div><button type="button" onClick={() => look(-4)}>Mirar a la izquierda</button><button type="button" onClick={() => look(4)}>Mirar a la derecha</button><button type="button" onClick={() => { setStiffness(320); setDamping(26); look(0) }}>Restablecer</button></div>
+          <div><button type="button" onClick={() => look(-4)}>Look left</button><button type="button" onClick={() => look(4)}>Look right</button><button type="button" onClick={() => { setStiffness(320); setDamping(26); look(0) }}>Reset</button></div>
         </div>
-        <pre aria-label="Configuración del ejemplo"><code>{`useSpring(target, {\n  stiffness: ${stiffness},\n  damping: ${damping},\n  mass: 0.25\n})`}</code></pre>
-        <details><summary>Ver el fragmento real del portafolio</summary><p>Extraído de ProjectArrivalBitty.tsx durante la compilación.</p><pre><code>{realEyeCode.trim()}</code></pre></details>
+        <pre aria-label="Example configuration"><code>{`useSpring(target, {\n  stiffness: ${stiffness},\n  damping: ${damping},\n  mass: 0.25\n})`}</code></pre>
+        <details><summary>View the actual portfolio snippet</summary><p>Extracted from ProjectArrivalBitty.tsx at build time.</p><pre><code>{realEyeCode.trim()}</code></pre></details>
       </article>
       <article>
-        <h4>02 / Ayudar no siempre requiere IA</h4>
-        <p>Selecciona un proyecto. El contenido cambia inmediatamente con datos locales y una acción permitida. Esta demostración no hace solicitudes de red.</p>
+        <h4>02 / Helping doesn’t always need AI</h4>
+        <p>Choose a project. Content changes instantly using local data and an allowed action. This demo makes no network requests.</p>
         <div className="lab-controls lab-projects">{projects.map((project) => <button type="button" key={project.slug} aria-pressed={selected.slug === project.slug} onClick={() => setSelected(project)}>{project.title}</button>)}</div>
-        <div className="lab-local-reply" aria-live="polite"><strong>{selected.title}</strong><p>{selected.summary}</p>{selected.url ? <a href={selected.url} target="_blank" rel="noreferrer">Abrir demo ↗</a> : <span>Demo no confirmada</span>}</div>
-        <pre aria-label="Contrato de la respuesta local"><code>{JSON.stringify(contract, null, 2)}</code></pre>
-        <p>El modelo puede redactar una respuesta, pero el texto no ejecuta código. React interpreta acciones de una lista permitida y decide la navegación.</p>
+        <div className="lab-local-reply" aria-live="polite"><strong>{selected.title}</strong><p>{selected.summary}</p>{selected.url ? <a href={selected.url} target="_blank" rel="noreferrer">Open demo ↗</a> : <span>Demo not confirmed</span>}</div>
+        <pre aria-label="Local response contract"><code>{JSON.stringify(contract, null, 2)}</code></pre>
+        <p>The model can write a reply, but text never executes code. React interprets allowlisted actions and handles navigation.</p>
       </article>
     </div>
   </section>

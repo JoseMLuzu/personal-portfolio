@@ -14,32 +14,32 @@ export function App() {
       <Projects />
       <Technologies />
       <section className="about" id="sobre-mi">
-        <p className="eyebrow">Sobre mí</p>
+        <p className="eyebrow">About me</p>
         <div>
           <h2>
-            Web útil.
+            Useful websites.
             <br />
-            Código con criterio.
+            Thoughtful code.
           </h2>
           <p>
-            Soy José Manuel Luzuriaga, desarrollador web con experiencia en
-            React, Python y bases de datos. Me interesa convertir problemas
-            concretos en interfaces claras y sistemas mantenibles.
+            I’m José Manuel Luzuriaga, a web developer with experience in
+            React, Python and databases. I turn real-world problems
+            into clear interfaces and maintainable systems.
           </p>
         </div>
         <article className="portfolio-engineering" id="criterio-tecnico">
           <div className="engineering-header"><div>
-          <p className="eyebrow">Un caso que puedes inspeccionar</p>
-          <h3>Este portafolio, por dentro.</h3>
+          <p className="eyebrow">A case you can inspect</p>
+          <h3>Inside this portfolio.</h3>
           </div><BittyRest stop="sobre-mi" /></div>
-          <p>La interacción de Bitty también es una muestra de cómo está construido el sitio.</p>
+          <p>Bitty’s interactions also show how this site is built.</p>
           <dl className="case-facts">
-            <div><dt>Animación 2D</dt><dd>GSAP coordina el paracaídas con el scroll y la inundación del stack. Motion anima al asistente. Las escenas respetan el movimiento reducido.</dd></div>
-            <div><dt>Acciones inmediatas</dt><dd>Mostrar un proyecto y navegar son acciones locales. No requieren una llamada a la IA.</dd></div>
-            <div><dt>IA con límites</dt><dd>FastAPI conserva la clave en el servidor. El modelo genera texto; las acciones se eligen de una lista permitida. Sin clave o ante un error, hay respuestas preparadas.</dd></div>
-            <div><dt>Un límite consciente</dt><dd>Las fichas distinguen los datos conocidos de lo que falta documentar. El recorrido funciona sin activar al guía.</dd></div>
+            <div><dt>2D animation</dt><dd>GSAP coordinates the scroll-driven parachute and stack tide. Motion animates the assistant. All scenes respect reduced motion.</dd></div>
+            <div><dt>Instant actions</dt><dd>Showing a project and navigating are local actions. No AI request is needed.</dd></div>
+            <div><dt>AI with boundaries</dt><dd>FastAPI keeps the key on the server. The model generates text; actions come from an allowlist. Without a key or if a request fails, prepared replies take over.</dd></div>
+            <div><dt>An intentional boundary</dt><dd>Case studies distinguish known facts from missing documentation. The portfolio works without enabling the guide.</dd></div>
           </dl>
-          <a className="text-action" href="https://github.com/JoseMLuzu/personal-portfolio" target="_blank" rel="noreferrer">Revisar el código del portafolio ↗</a>
+          <a className="text-action" href="https://github.com/JoseMLuzu/personal-portfolio" target="_blank" rel="noreferrer">Explore the portfolio source ↗</a>
         </article>
         <BittyCodeLab />
       </section>
@@ -48,7 +48,7 @@ export function App() {
           JML<span>_</span>
         </a>
         <p>
-          Construido con React + FastAPI ·{" "}
+          Built with React + FastAPI ·{" "}
           <span>{new Date().getFullYear()}</span>
         </p>
         <BittyRest stop="final" />

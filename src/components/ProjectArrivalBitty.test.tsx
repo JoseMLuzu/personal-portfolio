@@ -36,7 +36,7 @@ afterEach(() => vi.unstubAllGlobals());
 describe("Bitty project arrival", () => {
   it("waits for the viewport, supports replay, and stops its timeline on unmount", async () => {
     const { unmount } = render(<ProjectArrivalBitty />);
-    const replay = screen.getByRole("button", { name: "Repetir la llegada de Bitty" });
+    const replay = screen.getByRole("button", { name: "Replay Bitty’s arrival" });
     expect(replay).toBeDisabled();
     await act(async () => { enterViewport([{ isIntersecting: false }]); });
     expect(animation.animate).not.toHaveBeenCalled();
@@ -54,6 +54,6 @@ describe("Bitty project arrival", () => {
     const { container } = render(<ProjectArrivalBitty />);
     expect(container.querySelector(".project-arrival")).toHaveClass("is-static", "is-landed");
     expect(animation.animate).not.toHaveBeenCalled();
-    expect(screen.getByRole("button", { name: "Repetir la llegada de Bitty" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Replay Bitty’s arrival" })).toBeDisabled();
   });
 });

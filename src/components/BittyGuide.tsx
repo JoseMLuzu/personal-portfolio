@@ -97,21 +97,21 @@ export function BittyRest({ stop }: { stop: 'sobre-mi' | 'final' }) {
   const reduced = useReducedMotion()
   return <div className="bitty-rest"><AnimatePresence>
     {guide?.guided && !guide.hidden && guide.stop === stop && <motion.button
-      type="button" aria-label="Explorar esta sección con Bitty" onClick={() => guide.setPanelOpen(true)}
+      type="button" aria-label="Explore this section with Bitty" onClick={() => guide.setPanelOpen(true)}
       initial={{ opacity: 0, x: reduced ? 0 : 25, rotate: reduced ? 0 : 8 }}
       animate={{ opacity: 1, x: 0, rotate: 0 }} exit={{ opacity: 0 }}
       transition={reduced ? { duration: 0 } : { type: 'spring', stiffness: 200, damping: 18 }}>
-      <img src="/assets/bitty-stand.png" alt="" /><span>¿Lo exploramos?</span>
+      <img src="/assets/bitty-stand.png" alt="" /><span>Shall we explore?</span>
     </motion.button>}
   </AnimatePresence></div>
 }
 
 export const guideCopy: Record<GuideStop, { title: string; text: string }> = {
-  inicio: { title: 'Parece que buscas a un desarrollador…', text: 'Tengo uno justo aquí. React, Python y una mascota que no figura en la nómina. ¿Empezamos por su trabajo?' },
-  seeds: { title: '¿Otra idea en una servilleta?', text: 'Traje una carpeta: se llama Seeds. Puedes probar la aplicación o revisar su caso. El aporte personal aún necesita documentación; mi imaginación no cuenta como evidencia.' },
-  hostiqr: { title: 'Parece que estás mirando HostiQR…', text: 'Recepción digital para alojamientos con QR. Yo recibo a los visitantes de este portafolio. Sin sueldo, pero con animaciones. ¿Te abro la demo?' },
-  fintrack: { title: 'Aquí todavía hay trabajo en proceso.', text: 'FinTrack no tiene una demo confirmada. Podría inventarte una historia espectacular, pero mi contrato prohíbe el humo. Te muestro lo que falta documentar.' },
-  tecnologias: { title: 'Un stack, sin porcentajes mágicos.', text: 'Aquí se distingue la experiencia confirmada de las herramientas de este portafolio. La ballena es mi transporte, no una habilidad añadida al currículum.' },
-  'sobre-mi': { title: '¿Quieres pruebas, además de piruetas?', text: 'Buena pregunta. Puedes ajustar mis ojos en vivo y mirar el código que los mueve. También te enseño una respuesta local que funciona sin IA.' },
-  final: { title: 'Has llegado al final. Yo sobreviví.', text: '¿Revisamos el código o volvemos a los proyectos? Si solo viniste a verme caer, también lo entiendo.' },
+  inicio: { title: 'Looks like you’re looking for a developer…', text: 'There’s one right here. React, Python and a mascot who isn’t on the payroll. Shall we start with his work?' },
+  seeds: { title: 'Another idea on a napkin?', text: 'I brought a folder: it’s called Seeds. Try the app or explore the case study. Personal contributions still need documentation; my imagination doesn’t count as evidence.' },
+  hostiqr: { title: 'Looks like you’re exploring HostiQR…', text: 'QR-based digital reception for accommodations. I greet this portfolio’s visitors. Unpaid, but animated. Shall I open the demo?' },
+  fintrack: { title: 'Still a work in progress here.', text: 'FinTrack has no confirmed demo. I could invent an amazing story, but my contract bans hype. Let me show you what still needs documentation.' },
+  tecnologias: { title: 'A stack without magic percentages.', text: 'Confirmed experience is distinguished from tools used in this portfolio. The whale is my transport, not an extra skill on the résumé.' },
+  'sobre-mi': { title: 'Want evidence, not just acrobatics?', text: 'Good question. Adjust my eyes live and inspect the code behind them. I’ll also show you a local reply that works without AI.' },
+  final: { title: 'You reached the end. I survived.', text: 'Shall we inspect the source or return to the projects? If you only came to watch me fall, I get that too.' },
 }

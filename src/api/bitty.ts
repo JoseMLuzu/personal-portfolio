@@ -1,7 +1,7 @@
 import type { BittyReply } from '../types'
 
 const localFallback: BittyReply = {
-  text: 'Ahora mismo no puedo consultar el backend, pero puedes explorar los proyectos directamente aquí abajo.',
+  text: 'I can’t reach the backend right now, but you can explore the projects directly below.',
   project: null,
   action: { type: 'scroll_projects', projectSlug: null },
   source: 'fallback',

@@ -60,17 +60,17 @@ export function Projects() {
         <img className="sky-parachute" src="/assets/bitty-parachute.png" width="1254" height="1254" alt="" />
         <img className="sky-bitty" src="/assets/bitty-rope-hang.png" width="1024" height="1536" alt="" />
       </div>
-      <span className="sky-diver-caption">Esta vez traje paracaídas.</span>
+      <span className="sky-diver-caption">This time I brought a parachute.</span>
     </div>
     <div className="projects-sky-content">
       <header className="section-heading">
         <div>
-          <p className="eyebrow">Trabajo seleccionado</p>
-          <h2 id="projects-title">Proyectos reales,<br />sin humo.</h2>
+          <p className="eyebrow">Selected work</p>
+          <h2 id="projects-title">Real projects,<br />no hype.</h2>
         </div>
         <div className="project-heading-aside"><p>
-          Lo que está confirmado se muestra. Lo que falta, se marca. Cada caso
-          está preparado para crecer con contexto y resultados verificables.
+          Confirmed facts are shown. Missing details are flagged. Each case
+          is ready to grow with context and verifiable results.
         </p></div>
       </header>
       <div className="project-grid">

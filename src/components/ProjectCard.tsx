@@ -28,27 +28,27 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
           aria-controls={detailId}
           onClick={() => setExpanded((value) => !value)}
         >
-          {expanded ? 'Cerrar ficha' : 'Abrir ficha'} <span aria-hidden="true">{expanded ? '−' : '+'}</span>
+          {expanded ? 'Close case study' : 'Open case study'} <span aria-hidden="true">{expanded ? '−' : '+'}</span>
         </button>
         {project.url ? (
           <a href={project.url} target="_blank" rel="noreferrer">
-            Visitar app <span aria-hidden="true">↗</span>
+            Visit app <span aria-hidden="true">↗</span>
           </a>
         ) : (
-          <span className="no-link">Demo no confirmada</span>
+          <span className="no-link">Demo not confirmed</span>
         )}
       </div>
       {expanded && (
         <div className="project-detail" id={detailId}>
           <p>{project.detail}</p>
           <dl className="case-facts">
-            <div><dt>Problema</dt><dd>{project.caseStudy?.problem ?? 'Por documentar: el problema original y quién lo tenía.'}</dd></div>
-            <div><dt>Mi contribución</dt><dd>{project.caseStudy?.contribution ?? 'Por documentar: responsabilidad personal y alcance del trabajo.'}</dd></div>
-            <div><dt>Decisiones técnicas</dt><dd>{project.caseStudy?.decisions ?? 'Por documentar: alternativas consideradas, elección y sus límites.'}</dd></div>
-            <div><dt>Resultado</dt><dd>{project.result ?? 'Sin resultados documentados todavía.'}</dd></div>
+            <div><dt>Problem</dt><dd>{project.caseStudy?.problem ?? 'To document: the original problem and who faced it.'}</dd></div>
+            <div><dt>My contribution</dt><dd>{project.caseStudy?.contribution ?? 'To document: personal responsibilities and scope of work.'}</dd></div>
+            <div><dt>Technical decisions</dt><dd>{project.caseStudy?.decisions ?? 'To document: alternatives considered, the choice and its trade-offs.'}</dd></div>
+            <div><dt>Result</dt><dd>{project.result ?? 'No documented results yet.'}</dd></div>
           </dl>
-          {project.repositoryUrl && <a href={project.repositoryUrl} target="_blank" rel="noreferrer">Revisar código ↗</a>}
-          <p className="review-label">Datos por revisar</p>
+          {project.repositoryUrl && <a href={project.repositoryUrl} target="_blank" rel="noreferrer">Review source ↗</a>}
+          <p className="review-label">Details to review</p>
           <ul>{project.needsReview.map((item) => <li key={item}>{item}</li>)}</ul>
         </div>
       )}

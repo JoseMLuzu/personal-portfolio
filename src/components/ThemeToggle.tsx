@@ -22,8 +22,8 @@ export function ThemeToggle() {
     return () => window.removeEventListener('storage', sync)
   }, [])
   const dark = theme === 'dark'
-  return <button className="theme-toggle" type="button" aria-label={dark ? 'Activar modo claro' : 'Activar modo oscuro'}
-    aria-pressed={dark} title={dark ? 'Cambiar a claro' : 'Cambiar a oscuro'} onClick={() => setTheme(dark ? 'light' : 'dark')}>
+  return <button className="theme-toggle" type="button" aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+    aria-pressed={dark} title={dark ? 'Switch to light' : 'Switch to dark'} onClick={() => setTheme(dark ? 'light' : 'dark')}>
     {dark ? <Sun aria-hidden="true" size={19} /> : <Moon aria-hidden="true" size={19} />}
   </button>
 }

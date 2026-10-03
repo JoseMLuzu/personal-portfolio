@@ -132,10 +132,10 @@ export function ProjectArrivalBitty() {
         </motion.span>
         <motion.span className="arrival-impact" />
         {sparks.map((_, i) => <motion.span key={i} className={`arrival-spark arrival-spark-${i}`} />)}
-        <motion.span className="arrival-caption">Entrada perfectamente calculada.</motion.span>
+        <motion.span className="arrival-caption">A perfectly calculated entrance.</motion.span>
       </div>
-      <button className="arrival-replay" type="button" disabled={!landed || staticPose} onClick={() => setReplay((value) => value + 1)} aria-label="Repetir la llegada de Bitty">
-        <span aria-hidden="true">↻</span> Repetir escena
+      <button className="arrival-replay" type="button" disabled={!landed || staticPose} onClick={() => setReplay((value) => value + 1)} aria-label="Replay Bitty’s arrival">
+        <span aria-hidden="true">↻</span> Replay scene
       </button>
     </div>
   );
